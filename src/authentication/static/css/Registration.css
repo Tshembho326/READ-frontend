@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Jomhuria&family=Poppins:wght@400;600&display=swap');
+
+.registration-body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background: white;
+    font-family: 'Open Sans', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.outer-container {
+    width: 500px;
+    height: 630px;
+    background-color: #ffa500;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.heading {
+    font-family: 'Jomhuria', sans-serif;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.subheading {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    color: white;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.registration-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background: #ffa500;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    box-sizing: border-box;
+    max-width: 100%;
+}
+
+.logo {
+    width: 150px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.slogan {
+    color: black;
+    font-size: 18px;
+    font-family: 'Jomhuria', sans-serif;
+    font-weight: 300;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.registration-form button {
+    background: #ffa500;
+    color: #333;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.registration-form button:hover {
+    background: black;
+    color: #fff;
+}
+
+.error-message {
+    color: #d32f2f;
+    margin-top: 10px;
+    text-align: center;
+    font-size: 14px;
+}
+
+@media (max-width: 600px) {
+    .outer-container {
+        width: 100%;
+        height: auto;
+        padding: 20px;
+    }
+
+    .registration-form {
+        padding: 15px;
+    }
+}
