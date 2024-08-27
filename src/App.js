@@ -1,7 +1,11 @@
 import React from "react";
-import RegistrationPage from "./authentication/templates/Registration";
+import SignUp from "./authentication/templates/SignUpPage";
+import Login from "./authentication/templates/LoginPage";
 
-export function Register() {
-  return <RegistrationPage />
+export function SignUpFunctionality() {
+  return <SignUp />
 }
 
+export function LoginFunctionality() {
+  return <Login />
+}

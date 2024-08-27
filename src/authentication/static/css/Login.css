@@ -1,0 +1,28 @@
+body {
+    font-family: 'Jomhuria', sans-serif;
+    font-size: 30px;
+}
+
+h1 {
+  letter-spacing: 1px;
+}
+/* Apply to both login and signup forms */
+form div input {
+  border: none; /* Remove borders */
+  background-color: white; /* White background */
+  border-radius: 10px; /* Rounded corners */
+  padding: 15px; /* Add some padding */
+  font-weight: bold; /* Bold text */
+  font-size: 18px; /* Larger text */
+  margin-bottom: 10px;
+}
+
+form button {
+  background-color: black; /* Black background */
+  color: white; /* White text */
+  padding: 12px 20px; /* Add padding */
+  border: none; /* Remove border */
+  border-radius: 17px; /* Slightly rounded corners */
+  cursor: pointer; /* Indicate clickable */
+  font-family: 'Jomhuria', sans-serif; /* Use Jomhuria font */
+}
