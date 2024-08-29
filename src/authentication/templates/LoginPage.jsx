@@ -79,6 +79,7 @@ const Login = () => {
                 <div className="login-form-container">
                     <h2 className="name">Reading Tutor</h2>
                     <img src={Logo} alt="Logo" className="login-logo" />
+                    <h2 className='welcome'>Welcome Back!</h2>
                     <h2 className="slogan">Unlock the Joy of Reading</h2>
                     <div className="login-form">
                  
@@ -109,7 +110,7 @@ const Login = () => {
                         {error && <div className="error">{error}</div>}
                         <div className="links">
                             <a href="/forgot-password/">Forgot password?</a>
-                            <a href="/sign-up/">Create Account</a>
+                            <a href="/get-started/">Create Account</a>
                         </div>
                     </div>
                 </div>

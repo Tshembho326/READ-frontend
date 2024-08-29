@@ -4,7 +4,7 @@ import '../static/css/SignUp.css';
 import Logo from '../static/images/kid.png';
 import { Helmet } from 'react-helmet';
 
-function SignUp() {
+const SignUp = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -18,7 +18,7 @@ function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setErrorMessage(null);
+    setErrorMessage('');
 
     if (password !== confirmPassword) {
       setErrorMessage("Passwords do not match.");
@@ -27,10 +27,10 @@ function SignUp() {
     }
 
     const formData = {
-      firstName,
-      lastName,
-      email,
-      password,
+      first_name: firstName,
+      last_name: lastName,
+      email: email,
+      password: password,
       confirm_password: confirmPassword,
     };
 
@@ -46,7 +46,9 @@ function SignUp() {
 
       if (!response.ok) {
         const jsonResponse = await response.json();
-        throw new Error(`Error: ${jsonResponse.message || "An error occurred while submitting your request, please try again."}`);
+        setErrorMessage(jsonResponse.message || "An error occurred. Please try again.");
+        setLoading(false);
+        return;
       }
 
       const data = await response.json();
@@ -55,7 +57,7 @@ function SignUp() {
 
     } catch (error) {
       console.error("Error:", error);
-      setErrorMessage(error.message);
+      setErrorMessage("An error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -72,6 +74,7 @@ function SignUp() {
           <div className="signup-form-container">
             <h2 className="name">Reading Tutor</h2>
             <img src={Logo} alt="Logo" className="signup-logo" />
+            <h2 className='welcome'>Welcome onBoard!</h2>
             <h2 className="slogan">Join Us on Your Reading Journey</h2>
             <form className="signup-form" onSubmit={handleSubmit}>
               <input
@@ -122,11 +125,12 @@ function SignUp() {
             <div className="links">
               <a href="/">Already have an account? Log in</a>
             </div>
+        
           </div>
         </div>
       </div>
     </>
   );
-}
+};
 
 export default SignUp;
