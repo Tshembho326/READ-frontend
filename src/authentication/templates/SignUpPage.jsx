@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import '../static/css/SignUp.css';
+import Logo from '../static/images/kid.png';
+import { Helmet } from 'react-helmet';
 
 function SignUp() {
   const [firstName, setFirstName] = useState('');
@@ -9,43 +13,25 @@ function SignUp() {
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleFirstNameChange = (event) => {
-    setFirstName(event.target.value);
-  };
+  const navigate = useNavigate();
 
-  const handleLastNameChange = (event) => {
-    setLastName(event.target.value);
-  };
-
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
-  const handleConfirmPasswordChange = (event) => {
-    setConfirmPassword(event.target.value);
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setErrorMessage(null);
 
     if (password !== confirmPassword) {
-      alert('Passwords do not match!');
+      setErrorMessage("Passwords do not match.");
+      setLoading(false);
       return;
     }
 
-    setLoading(true);
-    setErrorMessage('');
-
     const formData = {
-      first_name: firstName,
-      last_name: lastName,
-      email: email,
-      password: password,
-      confirm_password: confirmPassword
+      firstName,
+      lastName,
+      email,
+      password,
+      confirm_password: confirmPassword,
     };
 
     try {
@@ -54,86 +40,92 @@ function SignUp() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: 'include',
         body: JSON.stringify(formData),
       });
 
       if (!response.ok) {
-        const data = await response.json();
-        setErrorMessage(data.detail || 'Sign up failed. Please try again.');
-      } else {
-        const data = await response.json();
-        console.log('Sign up successful:', data);
+        const jsonResponse = await response.json();
+        throw new Error(`Error: ${jsonResponse.message || "An error occurred while submitting your request, please try again."}`);
       }
+
+      const data = await response.json();
+      console.log("Success:", data);
+      navigate("/");
+
     } catch (error) {
-      console.error('Error:', error);
-      setErrorMessage('An error occurred. Please try again.');
+      console.error("Error:", error);
+      setErrorMessage(error.message);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="signup-container">
-      <h1>Sign Up</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <input
-            type="text"
-            id="firstName"
-            value={firstName}
-            onChange={handleFirstNameChange}
-            placeholder="Enter your First Name"
-            required
-          />
-        </div>
-        <div>
-          <input
-            type="text"
-            id="lastName"
-            value={lastName}
-            onChange={handleLastNameChange}
-            placeholder="Enter your Last Name"
-            required
-          />
-        </div>
-        <div>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={handleEmailChange}
-            placeholder="Email"
-            required
-          />
-        </div>
-        <div>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={handlePasswordChange}
-            placeholder="Password"
-            required
-          />
-        </div>
-        <div>
-          <input
-            type="password"
-            id="confirmPassword"
-            value={confirmPassword}
-            onChange={handleConfirmPasswordChange}
-            placeholder="Confirm Password"
-            required
-          />
-        </div>
+    <>
+      <Helmet>
+        <title>Sign Up | READ</title>
+      </Helmet>
 
-        {errorMessage && <div className="error-message">{errorMessage}</div>}
-
-        <button type="submit" disabled={loading}>
-          {loading ? 'Signing up...' : 'Sign Up'}
-        </button>
-      </form>
-    </div>
+      <div className="signup-body">
+        <div className="signup-container">
+          <div className="signup-form-container">
+            <h2 className="name">Reading Tutor</h2>
+            <img src={Logo} alt="Logo" className="signup-logo" />
+            <h2 className="slogan">Join Us on Your Reading Journey</h2>
+            <form className="signup-form" onSubmit={handleSubmit}>
+              <input
+                type="text"
+                id="firstName"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="Enter your First Name"
+                required
+              />
+              <input
+                type="text"
+                id="lastName"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                placeholder="Enter your Last Name"
+                required
+              />
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email"
+                required
+              />
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                required
+              />
+              <input
+                type="password"
+                id="confirmPassword"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Confirm Password"
+                required
+              />
+              {errorMessage && <div className="error">{errorMessage}</div>}
+              <button type="submit" disabled={loading}>
+                {loading ? 'Signing up...' : 'Sign Up'}
+              </button>
+            </form>
+            <div className="links">
+              <a href="/">Already have an account? Log in</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 

@@ -1,89 +1,123 @@
 import React, { useState } from 'react';
+import {  useNavigate } from 'react-router-dom';
 import '../static/css/Login.css';
+import Logo from '../static/images/kid.png';
+import { Helmet } from 'react-helmet';
 
-function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-  const [loading, setLoading] = useState(false);
 
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
+const Login = () => {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [error, setError] = useState('');
 
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setLoading(true);
-    setErrorMessage('');
-
-    const formData = {
-      email,
-      password,
+    const handleError = (error) => {
+        if (typeof error === 'string') {
+            setError(error);
+        } else if (error && typeof error.text === 'string') {
+            setError(error.text);
+        } else {
+            setError('An unknown error occurred.');
+        }
     };
 
-    try {
-      const response = await fetch("http://127.0.0.1:8000/login/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: 'include', 
-        body: JSON.stringify(formData),
-      });
 
-      if (!response.ok) {
-        const data = await response.json();
-        setErrorMessage(data.detail || 'Login failed. Please try again.');
-      } else {
-        const data = await response.json();
-        console.log('Login successful:', data);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      setErrorMessage('An error occurred. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
+    const navigate = useNavigate();
 
-  return (
-    <div className="login-container">
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={handleEmailChange}
-            placeholder="Email"
-            required
-          />
+
+    const handleLogin = async () => {
+        setError('');
+
+        if (!username || !password) {
+            setError('Email and password are required.');
+            return;
+        }
+    
+
+    
+
+        try {
+            const response = await fetch('/login/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: "include",
+                body: JSON.stringify({ username, password }),
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+
+                 if (data.token) {
+                     localStorage.setItem('authToken', data.token);
+                     localStorage.setItem('firstName', data.user.first_name);
+                     localStorage.setItem('lastName', data.user.last_name);
+                     localStorage.setItem('email', data.user.email);
+                     navigate('/home');
+                 } else {
+                     handleError('Unexpected response format.');
+                 }
+            } else {
+                handleError(data.message || 'Incorrect email or password.');
+            }
+        } catch (error) {
+            handleError('An error occurred while submitting your request.');
+        }
+    };
+
+    return (
+
+        <>
+
+        <Helmet>
+            <title>Sign In | READ</title>
+        </Helmet>
+
+        <div className="login-body">
+            <div className="login-container">
+                <div className="login-form-container">
+                    <h2 className="name">Reading Tutor</h2>
+                    <img src={Logo} alt="Logo" className="login-logo" />
+                    <h2 className="slogan">Unlock the Joy of Reading</h2>
+                    <div className="login-form">
+                 
+                        <input
+                            id="email"
+                            type="email"
+                            value={username}
+                            placeholder="Enter your email"
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                        
+                       
+                        <div className="password-container">
+                            <input
+                                id="password"
+                                type={showPassword ? 'text' : 'password'}
+                                value={password}
+                                placeholder="Enter your password"
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                            <span
+                                className="password-icon"
+                                onClick={() => setShowPassword(!showPassword)}
+                            >
+                            </span>
+                        </div>
+                        <button onClick={handleLogin}>Continue</button>
+                        {error && <div className="error">{error}</div>}
+                        <div className="links">
+                            <a href="/forgot-password/">Forgot password?</a>
+                            <a href="/sign-up/">Create Account</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={handlePasswordChange}
-            placeholder="Password"
-            required
-          />
-        </div>
-
-        {errorMessage && <div className="error-message">{errorMessage}</div>}
-
-        <button type="submit" disabled={loading}>
-          {loading ? 'Logging in...' : 'Login'}
-        </button>
-      </form>
-    </div>
-  );
-}
+        </>
+    );
+};
 
 export default Login;
