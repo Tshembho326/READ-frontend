@@ -3,6 +3,7 @@ import SignUp from "./authentication/templates/SignUpPage";
 import Login from "./authentication/templates/LoginPage";
 import ResetPassword from "./authentication/templates/ResetPasswordPage";
 import ForgotPassword from "./authentication/templates/ForgotPasswordPage";
+import GetStarted from "./authentication/templates/GetStartedPage";
 
 export function SignUpFunctionality() {
   return <SignUp />
@@ -18,4 +19,8 @@ export function ResetPasswordFunctionality() {
 
 export function ForgotPasswordFunctionality() {
   return <ForgotPassword />
+}
+
+export function GetStartedFunctionality() {
+  return <GetStarted />
 }
