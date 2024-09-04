@@ -1,0 +1,28 @@
+
+.navigation-bar {
+  background-color: #f5f5f5; /* Slightly darker white */
+  padding: 15px;
+  display: flex;
+  justify-content: space-around;
+  position: fixed;
+ 
+  left: 0;
+  width: 100%;
+  border-top: 1px solid #ddd; /* Subtle top border */
+}
+
+.nav-item {
+  text-align: center;
+}
+
+.nav-item span {
+  display: block;
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+.nav-item .icon {
+  font-size: 20px;
+  color: var(--secondary-color); /* Use secondary color for icons */
+  margin-bottom: 5px;
+}
