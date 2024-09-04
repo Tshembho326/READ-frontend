@@ -1,0 +1,30 @@
+  .controls {
+    margin-bottom: 20px;
+  }
+  
+  .start-button, .stop-button {
+    background: #ffa500;
+    color: #333;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background 0.3s ease-in-out;
+  }
+  
+  .start-button:hover, .stop-button:hover {
+    background: black;
+    color: #fff;
+  }
+  
+  .transcription-container {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    max-width: 600px;
+    text-align: center;
+  }
+  
