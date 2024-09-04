@@ -1,0 +1,45 @@
+header {
+  background-color: var(--primary-color);
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 5px var(--shadow-color); /* Neumorphism shadow */
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+}
+
+.back-button {
+  background-color: var(--primary-color);
+  border: none;
+  padding: 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  margin-right: 15px;
+  box-shadow: 0 2px 5px var(--shadow-color); /* Neumorphism shadow */
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.back-button:hover {
+  background-color: var(--light-blue-accent);
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.status-icons {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  margin-left: 15px;
+  font-size: 18px;
+  color: var(--blue-accent);
+}
