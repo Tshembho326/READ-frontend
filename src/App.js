@@ -5,7 +5,6 @@ import ResetPassword from "./authentication/templates/ResetPasswordPage";
 import ForgotPassword from "./authentication/templates/ForgotPasswordPage";
 import GetStarted from "./authentication/templates/GetStartedPage";
 import Library from "./llibrary/tamplates/library";
-import StorySelection from "./speech/templates/StorySelection";
 import ReadingPage from "./speech/templates/ReadingPage";
 
 export function SignUpFunctionality() {
@@ -26,10 +25,6 @@ export function ForgotPasswordFunctionality() {
 
 export function GetStartedFunctionality() {
   return <GetStarted />
-}
-
-export function StorySelectionFunctionality() {
-  return <StorySelection />
 }
 
 export function ReadingPageFunctionality() {
