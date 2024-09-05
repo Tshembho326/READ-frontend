@@ -1,8 +1,13 @@
+/* General Filter Bar Styles */
 .filter-bar {
   display: flex;
+  flex-direction: row; /* Horizontal layout initially */
   justify-content: center;
+  align-items: center;
   margin-bottom: 20px;
   padding: 10px;
+  transition: flex-direction 0.3s ease; /* Smooth transition between layouts */
+  
 }
 
 .filter-bar button {
@@ -14,14 +19,29 @@
   margin: 0 5px;
   border-radius: 20px;
   box-shadow: 0 2px 5px var(--shadow-color); /* Neumorphism shadow */
-  transition: background-color 0.3s ease; /* Smooth transition */
+  transition: background-color 0.3s ease, outline 0.3s ease; /* Smooth transition */
 }
 
 .filter-bar button.active {
-  background-color: var(--secondary-color);
+  background-color: #ffa500; /* Active state color */
   color: var(--text-color);
 }
 
 .filter-bar button:hover {
-  outline: 2px solid var(--blue-accent); /* Outline on hover */
+  outline: 2px solid black; /* Outline on hover */
+}
+
+/* Sticky vertical layout on scroll */
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .filter-bar {
+    flex-direction: column; /* Stack buttons vertically on small screens */
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .filter-bar button {
+    margin: 5px 0; /* Adjust margin for vertical layout */
+  }
 }
