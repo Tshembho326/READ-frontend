@@ -6,36 +6,25 @@ const Header = () => {
   return (
     <header>
       <div className="header-content">
-        <button className="back-button">
-          {/* Replace with back icon */}
-          &lt;
-        </button>
+
         <h1>READ-TUTOR</h1>
       </div>
-
-      <div className="status-icons">
-        <span className="icon">Signal</span>
-        <span className="icon">Battery</span>
-      </div>
-
+      <div>
       <nav className="navigation-bar">
         <div className="nav-item">
-          <Home className="icon" />
-          <span>Home</span>
+          <span> <Home className="icon" /> Home </span>
         </div>
         <div className="nav-item">
-          <BookOpen className="icon" />
-          <span>Library</span>
+          <span> <BookOpen className="icon" /> Library </span>
         </div>
         <div className="nav-item">
-          <BarChart2 className="icon" />
-          <span>Progress</span>
+          <span> <BarChart2 className="icon" /> Progress </span>
         </div>
         <div className="nav-item">
-          <User className="icon" />
-          <span>Profile</span>
+          <span> <User className="icon" /> Profile </span>
         </div>
       </nav>
+      </div>
     </header>
   );
 };

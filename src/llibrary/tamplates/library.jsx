@@ -2,21 +2,96 @@ import React, { useState } from 'react';
 import Header from './Header';
 import FilterBar from './FilterBar';
 import BookCard from './BookCard';
-import NavigationBar from './NavigationBar';
 import '../static/css/library.css';
+
+// Import the images (assuming your images folder is at the same level as the library folder)
+import littlePigs from '../static/images/littlePigs.png'; 
+import goldi from '../static/images/goldi.png';
 
 const Library = () => {
   const [books] = useState([
     {
       title: 'The Three Little Pigs',
       author: 'Traditional',
-      coverImage: '...', // Replace with actual image URL
+      coverImage: littlePigs, // Use the imported image
       difficulty: 'Easy',
     },
     {
       title: 'Goldilocks and the Three Bears',
       author: 'Traditional',
-      coverImage: '...', // Replace with actual image URL
+      coverImage: goldi, // Use the imported image 
+      difficulty: 'Easy',
+    },
+    {
+      title: 'The Three Little Pigs',
+      author: 'Traditional',
+      coverImage: littlePigs, // Use the imported image
+      difficulty: 'Easy',
+    },
+    {
+      title: 'Goldilocks and the Three Bears',
+      author: 'Traditional',
+      coverImage: goldi, // Use the imported image 
+      difficulty: 'Easy',
+    },
+    {
+      title: 'The Three Little Pigs',
+      author: 'Traditional',
+      coverImage: littlePigs, // Use the imported image
+      difficulty: 'Easy',
+    },
+    {
+      title: 'Goldilocks and the Three Bears',
+      author: 'Traditional',
+      coverImage: goldi, // Use the imported image 
+      difficulty: 'Easy',
+    },
+    {
+      title: 'The Three Little Pigs',
+      author: 'Traditional',
+      coverImage: littlePigs, // Use the imported image
+      difficulty: 'Easy',
+    },
+    {
+      title: 'Goldilocks and the Three Bears',
+      author: 'Traditional',
+      coverImage: goldi, // Use the imported image 
+      difficulty: 'Easy',
+    },
+    {
+      title: 'The Three Little Pigs',
+      author: 'Traditional',
+      coverImage: littlePigs, // Use the imported image
+      difficulty: 'Easy',
+    },
+    {
+      title: 'Goldilocks and the Three Bears',
+      author: 'Traditional',
+      coverImage: goldi, // Use the imported image 
+      difficulty: 'Easy',
+    },
+    {
+      title: 'The Three Little Pigs',
+      author: 'Traditional',
+      coverImage: littlePigs, // Use the imported image
+      difficulty: 'Easy',
+    },
+    {
+      title: 'Goldilocks and the Three Bears',
+      author: 'Traditional',
+      coverImage: goldi, // Use the imported image 
+      difficulty: 'Easy',
+    },
+    {
+      title: 'The Three Little Pigs',
+      author: 'Traditional',
+      coverImage: littlePigs, // Use the imported image
+      difficulty: 'Easy',
+    },
+    {
+      title: 'Goldilocks and the Three Bears',
+      author: 'Traditional',
+      coverImage: goldi, // Use the imported image 
       difficulty: 'Easy',
     },
     // ... more books

@@ -1,12 +1,13 @@
 body {
   background-color: #FFFFFF;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'poppins', sans-serif;
   color: #333333;
   margin: 0; /* Reset default margin */
+  font-size: 19px;
 }
 
 :root {
-  --primary-color: #FFFFFF;
+  --primary-color: #ffffff;
   --secondary-color: #FAFFAF;
   --blue-accent: #0F67B1;
   --light-blue-accent: #96C9F4;
@@ -24,4 +25,11 @@ body {
   width: 100%;
   background-color: var(--primary-color); /* Match background to header */
   z-index: 10; /* Ensure it's above other content */
+}
+
+.book-list{
+display:flex;
+align-items: center;
+flex-wrap: wrap;
+justify-content: center;
 }
