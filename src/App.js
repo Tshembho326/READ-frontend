@@ -5,6 +5,7 @@ import ResetPassword from "./authentication/templates/ResetPasswordPage";
 import ForgotPassword from "./authentication/templates/ForgotPasswordPage";
 import GetStarted from "./authentication/templates/GetStartedPage";
 import Library from "./llibrary/tamplates/library";
+import Profile from "./ManageAccount/templates/Profile";
 
 
 
@@ -30,4 +31,8 @@ export function GetStartedFunctionality() {
 
 export function LibraryFunctionality() {
   return <Library />
+}
+
+export function ProfileFunctionality() {
+  return <Profile />
 }
