@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { PlayIcon, PauseIcon } from 'lucide-react'; // Import icons from lucid-react
 import '../static/css/CaptureAudio.css';
 
 const CaptureAudio = () => {
@@ -10,7 +11,7 @@ const CaptureAudio = () => {
   const handleStartRecording = async () => {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     mediaRecorder.current = new MediaRecorder(stream);
-    
+
     mediaRecorder.current.ondataavailable = (event) => {
       audioChunks.current.push(event.data);
     };
@@ -44,14 +45,15 @@ const CaptureAudio = () => {
   };
 
   return (
-    <>
+    <div className="capture-audio">
       <div className="controls">
         <button 
           onClick={isRecording ? handleStopRecording : handleStartRecording} 
           className={isRecording ? 'stop-button' : 'start-button'}
         >
-          {isRecording ? 'Stop Recording' : 'Start Recording'}
+          {isRecording ? <PauseIcon className="icon" /> : <PlayIcon className="icon" />}
         </button>
+        {isRecording && <div className="wave-effect"></div>}
       </div>
       {transcription && (
         <div className="transcription-container">
@@ -59,7 +61,7 @@ const CaptureAudio = () => {
           <p>{transcription}</p>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

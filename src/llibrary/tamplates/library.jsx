@@ -2,99 +2,79 @@ import React, { useState } from 'react';
 import Header from './Header';
 import FilterBar from './FilterBar';
 import BookCard from './BookCard';
+import { Helmet } from 'react-helmet';
 import '../static/css/library.css';
 
 // Import the images (assuming your images folder is at the same level as the library folder)
 import littlePigs from '../static/images/littlePigs.png'; 
 import goldi from '../static/images/goldi.png';
+import catHat from '../static/images/catHat.png'; 
+import charlotteWeb from '../static/images/charlotteWeb.png';
+import harryPotter from '../static/images/harryPotter.png'; 
+import wizardOfOz from '../static/images/wizardOfOz.png';
+import aliceWonderland from '../static/images/aliceWonderland.png'; 
+import peterPan from '../static/images/peterPan.png';
+import lionWatch from '../static/images/lionWatch.png';
 
 const Library = () => {
   const [books] = useState([
+    // Easy books
     {
       title: 'The Three Little Pigs',
       author: 'Traditional',
-      coverImage: littlePigs, // Use the imported image
+      coverImage: littlePigs, 
       difficulty: 'Easy',
     },
     {
       title: 'Goldilocks and the Three Bears',
       author: 'Traditional',
-      coverImage: goldi, // Use the imported image 
+      coverImage: goldi, 
       difficulty: 'Easy',
     },
     {
-      title: 'The Three Little Pigs',
-      author: 'Traditional',
-      coverImage: littlePigs, // Use the imported image
+      title: 'The Cat in the Hat',
+      author: 'Dr. Seuss',
+      coverImage: catHat, 
       difficulty: 'Easy',
+    },
+    // Medium books
+    {
+      title: 'Charlotte\'s Web',
+      author: 'E. B. White',
+      coverImage: charlotteWeb, // Use the imported image 
+      difficulty: 'Medium',
     },
     {
-      title: 'Goldilocks and the Three Bears',
-      author: 'Traditional',
-      coverImage: goldi, // Use the imported image 
-      difficulty: 'Easy',
+      title: 'Harry Potter and the Philosopher\'s Stone',
+      author: 'J.K. Rowling',
+      coverImage: harryPotter, // Use the imported image
+      difficulty: 'Medium',
     },
     {
-      title: 'The Three Little Pigs',
-      author: 'Traditional',
-      coverImage: littlePigs, // Use the imported image
-      difficulty: 'Easy',
+      title: 'The Wizard of Oz',
+      author: 'L. Frank Baum',
+      coverImage: wizardOfOz, // Use the imported image 
+      difficulty: 'Medium',
+    },
+    // Hard books
+    {
+      title: 'Alice in Wonderland',
+      author: 'Lewis Carroll',
+      coverImage: aliceWonderland, // Use the imported image 
+      difficulty: 'Hard',
     },
     {
-      title: 'Goldilocks and the Three Bears',
-      author: 'Traditional',
-      coverImage: goldi, // Use the imported image 
-      difficulty: 'Easy',
+      title: 'Peter Pan',
+      author: 'J.M. Barrie',
+      coverImage: peterPan, // Reusing existing image, update to real image
+      difficulty: 'Hard',
     },
     {
-      title: 'The Three Little Pigs',
-      author: 'Traditional',
-      coverImage: littlePigs, // Use the imported image
-      difficulty: 'Easy',
+      title: 'The Chronicles of Narnia: The Lion, the Witch and the Wardrobe',
+      author: 'C.S. Lewis',
+      coverImage: lionWatch, // Reusing existing image, update to real image
+      difficulty: 'Hard',
     },
-    {
-      title: 'Goldilocks and the Three Bears',
-      author: 'Traditional',
-      coverImage: goldi, // Use the imported image 
-      difficulty: 'Easy',
-    },
-    {
-      title: 'The Three Little Pigs',
-      author: 'Traditional',
-      coverImage: littlePigs, // Use the imported image
-      difficulty: 'Easy',
-    },
-    {
-      title: 'Goldilocks and the Three Bears',
-      author: 'Traditional',
-      coverImage: goldi, // Use the imported image 
-      difficulty: 'Easy',
-    },
-    {
-      title: 'The Three Little Pigs',
-      author: 'Traditional',
-      coverImage: littlePigs, // Use the imported image
-      difficulty: 'Easy',
-    },
-    {
-      title: 'Goldilocks and the Three Bears',
-      author: 'Traditional',
-      coverImage: goldi, // Use the imported image 
-      difficulty: 'Easy',
-    },
-    {
-      title: 'The Three Little Pigs',
-      author: 'Traditional',
-      coverImage: littlePigs, // Use the imported image
-      difficulty: 'Easy',
-    },
-    {
-      title: 'Goldilocks and the Three Bears',
-      author: 'Traditional',
-      coverImage: goldi, // Use the imported image 
-      difficulty: 'Easy',
-    },
-    // ... more books
   ]);
 
   const [filteredBooks, setFilteredBooks] = useState(books);
@@ -109,6 +89,9 @@ const Library = () => {
 
   return (
     <div className="library">
+      <Helmet>
+        <title>Library | READ</title>
+      </Helmet>
       <Header />
       <FilterBar onFilterChange={handleFilterChange} />
 

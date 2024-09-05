@@ -1,30 +1,55 @@
-  .controls {
-    margin-bottom: 20px;
+/* CaptureAudio.css */
+.capture-audio {
+  display: flex;
+  align-items: center;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+}
+
+.start-button, .stop-button {
+  border: none;
+  background: #FFA500; /* Button color */
+  color: white;
+  cursor: pointer;
+  font-size: 24px;
+  padding: 10px;
+  border-radius: 5px;
+  margin-right: 10px; /* Space between button and wave effect */
+}
+
+.wave-effect {
+  width: 100px; /* Adjust width as needed */
+  height: 20px;
+  background: rgba(0, 123, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+  animation: wave-animation 1.5s infinite;
+}
+
+@keyframes wave-animation {
+  0% {
+    transform: translateX(-100%);
   }
-  
-  .start-button, .stop-button {
-    background: #ffa500;
-    color: #333;
-    padding: 14px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 18px;
-    transition: background 0.3s ease-in-out;
+  100% {
+    transform: translateX(100%);
   }
-  
-  .start-button:hover, .stop-button:hover {
-    background: black;
-    color: #fff;
-  }
-  
-  .transcription-container {
-    background: #fff;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
-    max-width: 600px;
-    text-align: center;
-  }
-  
+}
+
+.transcription-container {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+h2 {
+  margin: 0 0 10px;
+}
+
+p {
+  margin: 0;
+}
