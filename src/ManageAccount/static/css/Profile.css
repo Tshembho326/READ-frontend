@@ -1,0 +1,43 @@
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #fdfdfd; /* Assuming this is the background color based on the image */
+    color: black;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Heading for the labels (e.g. Name, Email, Password) */
+.fullname, .email, .password {
+    font-size: 3rem;
+    font-family:  'Jomhuria', sans-serif;
+    margin-bottom: 5px;
+}
+
+/* Displayed text (e.g. actual name, email) */
+h3 {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+/* Line after each section */
+.bottomline {
+    width: 300px; /* Adjust the width as per your preference */
+    height: 2px;
+    background-color: black;
+    margin-bottom: 30px;
+}
+
+/* Style for inputs or any other form elements (if needed) */
+input {
+    width: 300px;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: none;
+    border-bottom: 2px solid black;
+    background: none;
+    outline: none;
+    font-size: 1rem;
+}
