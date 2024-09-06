@@ -1,14 +1,13 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import { useLocation } from 'react-router-dom'; // Import useLocation to access the passed state
 import CaptureAudio from './CaptureAudio';
 import '../static/css/ReadingPage.css';
 import Header from '../../llibrary/tamplates/Header';
 
 const ReadingPage = () => {
-  const query = new URLSearchParams(window.location.search);
-  const title = query.get('title');
-  const content = query.get('content');
-
+  const location = useLocation(); // Access location to get the state
+  const { story } = location.state || {}; // Destructure the story from state
 
   return (
     <>
@@ -18,9 +17,9 @@ const ReadingPage = () => {
       <Header />
       <h1>Start Reading</h1>
       <div className="reading-page">      
-        <h1>{title}</h1>
+        <h1>{story?.title}</h1>
         <div className="story-content">
-          <p>{decodeURIComponent(content)}</p>
+          <p>{story?.content}</p> {/* Display story content */}
         </div>
         <CaptureAudio />
       </div>
