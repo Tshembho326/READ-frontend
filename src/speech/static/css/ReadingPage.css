@@ -1,0 +1,34 @@
+/* ReadingPage.css */
+
+.reading-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  background-color: #f9f9f9; /* Optional: Add a background color for better contrast */
+}
+
+.story-content {
+  max-width: 800px;
+  text-align: center;
+  margin: 20px 0;
+  line-height: 1.6; /* Optional: Adjust line spacing for readability */
+}
+
+h1 {
+  margin-bottom: 20px; /* Add spacing below the title */
+}
+
+p {
+  font-size: 16px; /* Adjust font size as needed */
+  color: #333; /* Optional: Adjust text color for better readability */
+}
+
+/* Optional: Add responsive design adjustments if needed */
+@media (max-width: 768px) {
+  .story-content {
+    font-size: 14px; /* Adjust font size for smaller screens */
+  }
+}

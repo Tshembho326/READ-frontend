@@ -54,6 +54,7 @@ const Login = () => {
                      localStorage.setItem('firstName', data.user.first_name);
                      localStorage.setItem('lastName', data.user.last_name);
                      localStorage.setItem('email', data.user.email);
+                     handleError('Login Successful');
                      navigate('/home');
                  } else {
                      handleError('Unexpected response format.');
