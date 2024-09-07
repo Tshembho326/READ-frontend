@@ -7,8 +7,8 @@ import '../static/css/ReadingPage.css';
 import Header from '../../llibrary/tamplates/Header';
 
 const ReadingPage = () => {
-  const location = useLocation(); // Access location to get the state
-  const { story } = location.state || {}; // Destructure the story from state
+  const location = useLocation();
+  const { story } = location.state || {}; 
 
   return (
     <>
@@ -20,7 +20,7 @@ const ReadingPage = () => {
         <h1>{story?.title}</h1>
         <img src={Logo} alt="Logo" className="login-logo" />
         <div className="story-content">
-          <p>{story?.content}</p> {/* Display story content */}
+          <p>{story?.content}</p> 
         </div>
         <CaptureAudio />
       </div>

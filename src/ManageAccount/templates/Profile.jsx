@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "../static/css/Profile.css";
 import Header from '../../llibrary/tamplates/Header';
+import { Helmet } from 'react-helmet';
 
 const Profile = () => {
     const firstName = localStorage.getItem("firstName")
@@ -11,6 +12,9 @@ const Profile = () => {
 
     return(
         <div>
+            <Helmet>
+                <title>Profile | READ</title>
+            </Helmet>
             <Header />
             <div className='profile-info'>
                 <h2 className='fullname'>Name</h2>
