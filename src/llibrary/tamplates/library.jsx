@@ -68,7 +68,7 @@ const Library = () => {
       difficulty: 'Hard',
     },
     {
-      title: 'The Chronicles of Narnia: The Lion, the Witch and the Wardrobe',
+      title: 'The Chronicles of Narnia',
       author: 'C.S. Lewis',
       coverImage: lionWatch, 
       difficulty: 'Hard',

@@ -7,7 +7,6 @@ import * as Yup from 'yup';
 import { MdVerified } from 'react-icons/md';
 import { MdOutlineMail } from "react-icons/md";
 import { Helmet } from 'react-helmet';
-import profilePicture from '../static/images/profile.png';
 
 const Profile = () => {
     const [activeTab, setActiveTab] = useState('profile');
@@ -130,7 +129,6 @@ const Profile = () => {
                                     <div className="profile-details">
                                         <div className="input-group email-group">
                                             <MdOutlineMail className="icon" />
-                                            <img src="" alt="Profile" className="profile-placeholder" />
                                             <span>{initialProfileValues.email}</span>
                                             <MdVerified className="verified-icon" />
                                         </div>
