@@ -6,8 +6,8 @@ import * as Yup from 'yup';
 import { MdVerified } from 'react-icons/md';
 import { MdOutlineMail } from "react-icons/md";
 import { Helmet } from 'react-helmet';
-import ProfilePhoto2 from '../../ManageAccount/images/ProfilePhoto.png'
-import ProfilePhoto from '../../ManageAccount/images/ProfilePhoto2.png'
+import ProfilePhoto from '../../ManageAccount/images/ProfilePhoto.png'
+import ProfilePhoto2 from '../../ManageAccount/images/ProfilePhoto2.png'
 
 const Profile = () => {
     const [activeTab, setActiveTab] = useState('profile');
