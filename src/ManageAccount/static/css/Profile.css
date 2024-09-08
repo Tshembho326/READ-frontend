@@ -6,6 +6,59 @@
     text-align: center;
 }
 
+/* Parent container to center everything horizontally */
+.profile-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+/* Center the profile photo dynamically based on the width of the name and email */
+.profile-photo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+/* Wrapper for name and email to calculate the dynamic width */
+.name-email-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+/* Name styling */
+.profile-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+/* Email styling */
+.profile-email {
+    font-size: 18px;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+/* Email group for icons */
+.email-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+}
+
+/* Ensure icons are properly spaced */
+.icon, .verified-icon {
+    margin-left: 5px;
+}
+
 .title {
     font-size: 50px;
     margin-bottom: 20px;
@@ -90,18 +143,6 @@
 .secondary-button {
     background-color: transparent;
     color: black;
-}
-
-.email-group {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    margin-bottom: 20px;
-}
-
-.icon, .verified-icon {
-    margin-right: 10px;
 }
 
 .message {
