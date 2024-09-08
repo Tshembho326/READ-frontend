@@ -1,0 +1,63 @@
+.progress-tracker {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 58px;
+  box-shadow: 6px 7px 8px #888;
+  width: 400px;
+  border: 3px solid #fbaa19;
+}
+
+.total-level-section {
+  text-align: center;
+}
+
+.total-level {
+  font-size: 19px;
+  margin-bottom: 0px;
+  color: #000000;
+}
+
+.level-value {
+  font-size: 90px;
+  color: #FBAA19;
+}
+
+.accuracy-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.accuracy-label {
+  font-size: 19px;
+  color: #000000;
+ 
+}
+
+.accuracy-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.emoji-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.sunglasses-emoji img{
+  display:flex;
+}
+
+.accuracy-percentage {
+  margin-top: 10px;
+  font-size: 24px;
+  color: #333;
+}

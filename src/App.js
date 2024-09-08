@@ -7,9 +7,13 @@ import GetStarted from "./authentication/templates/GetStartedPage";
 import Library from "./llibrary/tamplates/library";
 import Profile from "./ManageAccount/templates/Profile";
 import ReadingPage from "./speech/templates/ReadingPage";
+import Home from "./home/tamplates/Home"
 
 export function SignUpFunctionality() {
   return <SignUp />
+}
+export function HomeFunctionality() {
+  return <Home />
 }
 
 export function LoginFunctionality() {

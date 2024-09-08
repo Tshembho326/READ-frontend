@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import React, { useState } from 'react';
+// import { useNavigate } from 'react-router-dom';
 import "../static/css/Profile.css";
 import Header from '../../llibrary/tamplates/Header';
 
@@ -7,7 +7,7 @@ const Profile = () => {
     const firstName = localStorage.getItem("firstName")
     const lastName = localStorage.getItem("lastName")
     const email = localStorage.getItem("email")
-    const [password, setPassword] = useState('')
+    //const [password, setPassword] = useState('')
 
     return(
         <div>
