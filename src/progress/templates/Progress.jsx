@@ -39,7 +39,7 @@ const Progress = () => {
             const totalReads = data.totalReads;
             const correctReads = data.correctReads;
             setTotalLevel(totalReads);
-            const calculatedAccuracy = totalReads > 0 ? (correctReads / totalReads) * 100 : 0;
+            const calculatedAccuracy = totalReads > 0 ? (correctReads / totalReads) * 100 : 75;
             setAccuracy(calculatedAccuracy);
             setDetailedProgress([
                 { level: 'Easy', levelValue: 1, progress: 70 },

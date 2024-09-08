@@ -1,14 +1,14 @@
 import React from 'react';
-//import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import '../static/css/BookCard.css';
 
 const BookCard = ({ title, coverImage, difficulty }) => {
  
-
+  const navigate = useNavigate();
   const handleButtonClick = async () => {
     // Retrieve titles from localStorage, or initialize as an empty array if it doesn't exist
     let titles = JSON.parse(localStorage.getItem('TitlesList')) || [];
-  
+    
     // Check if the title is already in the list and add it if not
     if (!titles.includes(title)) {
       titles.push(title);
@@ -26,7 +26,8 @@ const BookCard = ({ title, coverImage, difficulty }) => {
   
       if (response.ok) {
         const story = await response.json();
-        console.log(story);
+        navigate('/reading-page', {state : {story}});
+        
       } else {
         console.error('Failed to fetch story');
       }
