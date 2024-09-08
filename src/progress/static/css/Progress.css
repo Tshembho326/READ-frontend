@@ -1,8 +1,12 @@
-
 .progress-page {
     background-color: white;
     color: #333;
     padding: 20px;
+    height: 100vh; /* Make the container fill the entire viewport height */
+    display: flex;
+    justify-content: center; /* Centers the content horizontally */
+    align-items: center; /* Centers the content vertically */
+    flex-direction: column; /* Makes sure elements stack vertically */
 }
 
 .summary-section {
