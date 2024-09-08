@@ -1,0 +1,56 @@
+[
+  {
+    "title": "The Three Little Pigs",
+    "author": "Traditional",
+    "coverImage": "littlePigs",
+    "difficulty": "Easy"
+  },
+  {
+    "title": "Goldilocks and the Three Bears",
+    "author": "Traditional",
+    "coverImage": "goldi",
+    "difficulty": "Easy"
+  },
+  {
+    "title": "The Cat in the Hat",
+    "author": "Dr. Seuss",
+    "coverImage": "catHat",
+    "difficulty": "Easy"
+  },
+  {
+    "title": "Charlotte's Web",
+    "author": "E. B. White",
+    "coverImage": "charlotteWeb",
+    "difficulty": "Medium"
+  },
+  {
+    "title": "Harry Potter and the Philosopher's Stone",
+    "author": "J.K. Rowling",
+    "coverImage": "harryPotter",
+    "difficulty": "Medium"
+  },
+  {
+    "title": "The Wizard of Oz",
+    "author": "L. Frank Baum",
+    "coverImage": "wizardOfOz",
+    "difficulty": "Medium"
+  },
+  {
+    "title": "Alice in Wonderland",
+    "author": "Lewis Carroll",
+    "coverImage": "aliceWonderland",
+    "difficulty": "Hard"
+  },
+  {
+    "title": "Peter Pan",
+    "author": "J.M. Barrie",
+    "coverImage": "peterPan",
+    "difficulty": "Hard"
+  },
+  {
+    "title": "The Chronicles of Narnia: The Lion, the Witch and the Wardrobe",
+    "author": "C.S. Lewis",
+    "coverImage": "lionWatch",
+    "difficulty": "Hard"
+  }
+]

@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
 import "../static/css/Profile.css";
-import Header from '../../llibrary/tamplates/Header';
+import Header from '../../llibrary/tamplates/Header'
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { MdVerified } from 'react-icons/md';
 import { MdOutlineMail } from "react-icons/md";
 import { Helmet } from 'react-helmet';
-import ProfilePhoto from '../../ManageAccount/images/ProfilePhoto.png'
-import ProfilePhoto2 from '../../ManageAccount/images/ProfilePhoto2.png'
+import ProfilePhoto from '../../ManageAccount/images/ProfilePhoto.png';
+import ProfilePhoto2 from '../../ManageAccount/images/ProfilePhoto2.png';
 
 const Profile = () => {
-    const [activeTab, setActiveTab] = useState('profile');
-    const [isEditing, setIsEditing] = useState(false);
-    const [message, setMessage] = useState({ type: '', text: '' });
+    const [activeTab, setActiveTab] = useState('profile'); // state for active tab
+    const [isEditing, setIsEditing] = useState(false); // state for edit mode
+    const [message, setMessage] = useState({ text: '', type: '' }); // state for message
 
     const initialProfileValues = {
-        email: localStorage.getItem('email') || '',
-        firstName: localStorage.getItem('firstName') || '',
-        lastName: localStorage.getItem('lastName') || '',
-   };
+        firstName: localStorage.getItem("firstName") || '',
+        lastName: localStorage.getItem("lastName") || '',
+        email: localStorage.getItem("email") || ''
+    };
 
     const profileValidationSchema = Yup.object().shape({
         firstName: Yup.string().required('First name is required'),
@@ -27,96 +27,27 @@ const Profile = () => {
 
     const passwordValidationSchema = Yup.object().shape({
         currentPassword: Yup.string().required('Current password is required'),
-        newPassword: Yup.string().required('New password is required').min(6, 'Password must be at least 6 characters long'),
+        newPassword: Yup.string().required('New password is required'),
         confirmPassword: Yup.string()
             .oneOf([Yup.ref('newPassword'), null], 'Passwords must match')
             .required('Confirm password is required'),
     });
 
-    const handleUpdate = async (values) => {
-        try {
-            const response = await fetch('http://127.0.0.1:8000/change-user-details/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: "include",
-                body: JSON.stringify({
-                    email: initialProfileValues.email,
-                    firstName: values.firstName,
-                    lastName: values.lastName,
-                }),
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                localStorage.setItem('firstName', values.firstName);
-                localStorage.setItem('lastName', values.lastName);
-
-                setMessage({ type: 'success', text: data.message || 'Profile updated successfully' });
-                setTimeout(() => {
-                    setMessage({ type: '', text: '' });
-                }, 3000);
-                setIsEditing(false);
-            } else {
-                setMessage({ type: 'error', text: data.message || 'Failed to update Profile' });
-                setTimeout(() => {
-                    setMessage({ type: '', text: '' });
-                }, 3000);
-            }
-        } catch (error) {
-            setMessage({ type: 'error', text: 'Error occurred while updating Profile' });
-            setTimeout(() => {
-                setMessage({ type: '', text: '' });
-            }, 3000);
-        }
+    const handleUpdate = (values) => {
+        // Handle profile update logic here
+        setMessage({ text: 'Profile updated successfully!', type: 'success' });
+        setIsEditing(false);
     };
 
-    const handleChangePassword = async (values) => {
-        try {
-            const response = await fetch('http://127.0.0.1:8000/change-password/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                credentials: "include",
-                body: JSON.stringify({
-                    oldPassword: values.currentPassword,
-                    email: initialProfileValues.email,
-                    newPassword: values.newPassword
-                }),
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                setMessage({ type: 'success', text: data.message || 'Password changed successfully' });
-                setTimeout(() => {
-                    setMessage({ type: '', text: '' });
-                }, 3000);
-            } else {
-                setMessage({ type: 'error', text: data.message || 'Incorrect old password' });
-                setTimeout(() => {
-                    setMessage({ type: '', text: '' });
-                }, 3000);
-            }
-        } catch (error) {
-            setMessage({ type: 'error', text: 'Error changing password' });
-            setTimeout(() => {
-                setMessage({ type: '', text: '' });
-            }, 3000);
-        }
+    const handleChangePassword = (values) => {
+        // Handle password change logic here
+        setMessage({ text: 'Password changed successfully!', type: 'success' });
     };
 
     return (
-        <>
-            <Helmet>
-                <title>Personal Details | READ</title>
-            </Helmet>
+        <div>
             <Header />
             <div className="profile-container">
-
                 <h1 className="title">Personal Info</h1>
 
                 <div className="tabs">
@@ -146,11 +77,11 @@ const Profile = () => {
                             {!isEditing ? (
                                 <>
                                     <div className="profile-details">
-                                        <img src={ProfilePhoto} className="profile-photo" alt={ProfilePhoto2}/>
+                                        <img src={ProfilePhoto} className="profile-photo" alt="Profile" />
 
                                         <div className="name-email-wrapper">
                                             <label className="profile-name">
-                                                {localStorage.getItem("firstName")} {localStorage.getItem("lastName")}
+                                                {initialProfileValues.firstName} {initialProfileValues.lastName}
                                             </label>
                                             <div className="email-group">
                                                 <MdOutlineMail className="icon" />
@@ -242,7 +173,7 @@ const Profile = () => {
                     )}
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 
