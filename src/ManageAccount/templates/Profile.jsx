@@ -114,7 +114,7 @@ const Profile = () => {
             <Helmet>
                 <title>Personal Details | READ</title>
             </Helmet>
-            <Header/>
+            <Header />
             <div className="profile-container">
 
                 <h1 className="title">Personal Info</h1>

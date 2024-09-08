@@ -1,0 +1,75 @@
+
+.progress-page {
+    background-color: white;
+    color: #333;
+    padding: 20px;
+}
+
+.summary-section {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.total-level, .accuracy {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 45%;
+}
+
+.total-level-number {
+    font-size: 1.5em; 
+    font-weight: bold; 
+}
+
+.accuracy {
+    text-align: center;
+}
+
+.accuracy-image {
+    display: block;
+    margin: 10px auto;
+    width: 50px; /* Adjust size if necessary */
+    height: 50px;
+}
+
+.accuracy-percentage {
+    font-size: 1.2em; /* Adjust size for percentage */
+    font-weight: bold; /* Make percentage bold */
+}
+
+.detailed-progress {
+    margin: 20px;
+}
+
+.progress-item {
+    margin-bottom: 15px;
+}
+
+.progress-bar {
+    background-color: #ddd;
+    border-radius: 5px;
+    height: 10px;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.progress {
+    height: 100%;
+    border-radius: 5px;
+}
+
+.easy .progress {
+    background-color: blue;
+}
+
+.medium .progress {
+    background-color: green;
+}
+
+.hard .progress {
+    background-color: red;
+}

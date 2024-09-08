@@ -4,8 +4,6 @@ import FilterBar from './FilterBar';
 import BookCard from './BookCard';
 import { Helmet } from 'react-helmet';
 import '../static/css/library.css';
-
-// Import the images (assuming your images folder is at the same level as the library folder)
 import littlePigs from '../static/images/littlePigs.png'; 
 import goldi from '../static/images/goldi.png';
 import catHat from '../static/images/catHat.png'; 
@@ -41,38 +39,38 @@ const Library = () => {
     {
       title: 'Charlotte\'s Web',
       author: 'E. B. White',
-      coverImage: charlotteWeb, // Use the imported image 
+      coverImage: charlotteWeb, 
       difficulty: 'Medium',
     },
     {
       title: 'Harry Potter and the Philosopher\'s Stone',
       author: 'J.K. Rowling',
-      coverImage: harryPotter, // Use the imported image
+      coverImage: harryPotter, 
       difficulty: 'Medium',
     },
     {
       title: 'The Wizard of Oz',
       author: 'L. Frank Baum',
-      coverImage: wizardOfOz, // Use the imported image 
+      coverImage: wizardOfOz, 
       difficulty: 'Medium',
     },
     // Hard books
     {
       title: 'Alice in Wonderland',
       author: 'Lewis Carroll',
-      coverImage: aliceWonderland, // Use the imported image 
+      coverImage: aliceWonderland, 
       difficulty: 'Hard',
     },
     {
       title: 'Peter Pan',
       author: 'J.M. Barrie',
-      coverImage: peterPan, // Reusing existing image, update to real image
+      coverImage: peterPan, 
       difficulty: 'Hard',
     },
     {
-      title: 'The Chronicles of Narnia: The Lion, the Witch and the Wardrobe',
+      title: 'The Chronicles of Narnia',
       author: 'C.S. Lewis',
-      coverImage: lionWatch, // Reusing existing image, update to real image
+      coverImage: lionWatch, 
       difficulty: 'Hard',
     },
   ]);

@@ -7,6 +7,7 @@ import GetStarted from "./authentication/templates/GetStartedPage";
 import Library from "./llibrary/tamplates/library";
 import Profile from "./ManageAccount/templates/Profile";
 import ReadingPage from "./speech/templates/ReadingPage";
+import Progress from "./progress/templates/Progress";
 
 export function SignUpFunctionality() {
   return <SignUp />
@@ -38,4 +39,8 @@ export function LibraryFunctionality() {
 
 export function ProfileFunctionality() {
   return <Profile />
+}
+
+export function ProgressFunctionality() {
+  return <Progress />
 }
