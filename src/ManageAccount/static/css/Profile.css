@@ -1,43 +1,163 @@
-.profile-info {
+
+.profile-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Parent container to center everything horizontally */
+.profile-details {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background-color: #fdfdfd; /* Assuming this is the background color based on the image */
-    color: black;
-    font-family: 'Arial', sans-serif;
+    margin-bottom: 20px;
+    position: relative;
 }
 
-/* Heading for the labels (e.g. Name, Email, Password) */
-.fullname, .email, .password {
-    font-size: 3rem;
-    font-family:  'Jomhuria', sans-serif;
+/* Center the profile photo dynamically based on the width of the name and email */
+.profile-photo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+/* Wrapper for name and email to calculate the dynamic width */
+.name-email-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+/* Name styling */
+.profile-name {
+    font-size: 18px;
+    font-weight: bold;
     margin-bottom: 5px;
+    text-align: center;
 }
 
-/* Displayed text (e.g. actual name, email) */
-h3 {
-    font-size: 1.1rem;
+/* Email styling */
+.profile-email {
+    font-size: 18px;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+/* Email group for icons */
+.email-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+}
+
+/* Ensure icons are properly spaced */
+.icon, .verified-icon {
+    margin-left: 5px;
+}
+
+.title {
+    font-size: 50px;
     margin-bottom: 20px;
 }
 
-/* Line after each section */
-.bottomline {
-    width: 300px; /* Adjust the width as per your preference */
-    height: 2px;
-    background-color: black;
-    margin-bottom: 30px;
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
 }
 
-/* Style for inputs or any other form elements (if needed) */
-input {
-    width: 300px;
+.tab-button {
+    background-color: transparent;
+    border: 2px solid black;
+    padding: 10px 20px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    cursor: pointer;
+    font-size: 18px;
+    margin: 0 10px;
+    border:2px solid;
+    border-color: #000000;
+    border-radius: 16px;
+}
+
+.tab-button.active {
+    background-color: #FFA500;
+    color: rgb(0, 0, 0);
+}
+
+.card {
+    padding: 20px;
+    border: 2px solid #000;
+    border-radius: 10px;
+}
+
+.field {
+    margin-bottom: 20px;
+}
+
+.label {
+    display: block;
+    font-size: 18px;
+    margin-bottom: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+}
+
+.input {
+    width: 90%;
     padding: 10px;
-    margin-bottom: 20px;
-    border: none;
-    border-bottom: 2px solid black;
-    background: none;
-    outline: none;
-    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
 }
+
+.error-message {
+    color: red;
+    font-size: 14px;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    border: 2px solid black;
+    cursor: pointer;
+    border-radius: 16px;
+}
+
+.primary-button {
+    background-color: #FFA500;
+    color: rgb(0, 0, 0);
+}
+
+.secondary-button {
+    background-color: transparent;
+    color: black;
+}
+
+.message {
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.message.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+

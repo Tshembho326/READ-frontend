@@ -32,3 +32,14 @@ p {
     font-size: 14px; /* Adjust font size for smaller screens */
   }
 }
+
+.highlight-yellow {
+  background-color: yellow;
+  font-weight: bold;
+}
+
+.highlight-red {
+  background-color: red;
+  color: white;
+  font-weight: bold;
+}
