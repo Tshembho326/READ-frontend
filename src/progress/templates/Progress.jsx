@@ -6,7 +6,7 @@ import sadFace from '../static/images/sad-face.png';
 import normalFace from '../static/images/normal-face.png';
 import happyFace from '../static/images/happy-face.png';
 import extremelyHappyFace from '../static/images/extremely-happy-face.png';
-
+import ProgressTracker from '../../home/tamplates/Progress'; // Import the ProgressTracker component
 
 const fetchDataFromAPI = async () => {
     try {
@@ -54,29 +54,18 @@ const Progress = () => {
     const imgSrc = getAccuracyImage(accuracy);
 
     return (
-        <div className="progress-page">
+        <>
+            <Header />
+            <div className="progress-page">
             <Helmet>
                 <title>Progress | READ</title>
             </Helmet>
-            <Header />
+            
 
             <main>
-                <div className="summary-section">
-                    <div className="total-level">
-                        <h2>Total Level</h2>
-                        <span className="total-level-number">{totalLevel}</span>
-                    </div>
-                    <div className="accuracy">
-                        <h2>Accuracy</h2>
-                        <img src={imgSrc} alt={`Accuracy image showing ${accuracy.toFixed(2)}%`} className="accuracy-image" />
-                        <div className="accuracy-percentage">
-                            <span>{accuracy.toFixed(2)}%</span>
-                        </div>
-                    </div>
-                </div>
-
+                <ProgressTracker totalLevel={totalLevel} accuracy={accuracy.toFixed(2)} />
                 <div className="detailed-progress">
-                    <h3>Detailed Progress</h3>
+                    <h1>Detailed Progress</h1>
                     {detailedProgress.map((progress, index) => (
                         <div key={index} className={`progress-item ${progress.level.toLowerCase()}`}>
                             <span>{progress.level} Reads : Lv {progress.levelValue}</span>
@@ -88,6 +77,8 @@ const Progress = () => {
                 </div>
             </main>
         </div>
+        </>
+        
     );
 };
 

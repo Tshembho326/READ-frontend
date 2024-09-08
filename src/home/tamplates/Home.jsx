@@ -3,6 +3,7 @@ import Progress from "./Progress.jsx" // Assuming ProgressTracker is in a separa
 import Header from "../../llibrary/tamplates/Header.jsx"
 import PreviouslyReadStories from "./PreviouslyReadStories.jsx"
 import "../Static/css/home.css"
+import { Helmet } from 'react-helmet';
 
 
 
@@ -12,12 +13,13 @@ import "../Static/css/home.css"
 function Home() {
   return (
     <div className="home">
-
-      <Header></Header>
-      {/* Other content */}
+      <Helmet>
+        <title>Home | READ</title>
+      </Helmet>
+      <Header />
       <div>
       <div className='container'>
-        <Progress totalLevel={9} accuracy={92} /> 
+        <Progress totalLevel={9} accuracy={50} /> 
       </div>
       <h1>
         Currently Reading:
