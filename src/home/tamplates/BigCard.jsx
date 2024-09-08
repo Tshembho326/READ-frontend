@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import '../Static/css/BigCard.css';
+import { useNavigate } from 'react-router-dom';
 
 const BigCard = ({ title, coverImage, difficulty, content, onRemove }) => {
   const [isVisible, setIsVisible] = useState(true);
+  const navigate = useNavigate();
 
   const handleReadNowClick = async () => {
     // Fetch the story from the server
@@ -11,7 +13,7 @@ const BigCard = ({ title, coverImage, difficulty, content, onRemove }) => {
       const response = await fetch(`http://127.0.0.1:8000/stories/${encodedTitle}/`);
       if (response.ok) {
         const story = await response.json();
-        console.log(story);
+        navigate('/reading-page', {state: {story}});
         // Handle story display or any other logic here
       } else {
         console.error('Failed to fetch story');
