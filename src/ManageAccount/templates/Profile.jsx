@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import "../static/css/Profile.css";
 import Header from '../../llibrary/tamplates/Header';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
@@ -7,6 +6,8 @@ import * as Yup from 'yup';
 import { MdVerified } from 'react-icons/md';
 import { MdOutlineMail } from "react-icons/md";
 import { Helmet } from 'react-helmet';
+import ProfilePhoto from '../../ManageAccount/images/ProfilePhoto.png'
+import ProfilePhoto2 from '../../ManageAccount/images/ProfilePhoto2.png'
 
 const Profile = () => {
     const [activeTab, setActiveTab] = useState('profile');
@@ -54,12 +55,21 @@ const Profile = () => {
                 localStorage.setItem('lastName', values.lastName);
 
                 setMessage({ type: 'success', text: data.message || 'Profile updated successfully' });
+                setTimeout(() => {
+                    setMessage({ type: '', text: '' });
+                }, 3000);
                 setIsEditing(false);
             } else {
                 setMessage({ type: 'error', text: data.message || 'Failed to update Profile' });
+                setTimeout(() => {
+                    setMessage({ type: '', text: '' });
+                }, 3000);
             }
         } catch (error) {
             setMessage({ type: 'error', text: 'Error occurred while updating Profile' });
+            setTimeout(() => {
+                setMessage({ type: '', text: '' });
+            }, 3000);
         }
     };
 
@@ -82,11 +92,20 @@ const Profile = () => {
 
             if (response.ok) {
                 setMessage({ type: 'success', text: data.message || 'Password changed successfully' });
+                setTimeout(() => {
+                    setMessage({ type: '', text: '' });
+                }, 3000);
             } else {
                 setMessage({ type: 'error', text: data.message || 'Incorrect old password' });
+                setTimeout(() => {
+                    setMessage({ type: '', text: '' });
+                }, 3000);
             }
         } catch (error) {
             setMessage({ type: 'error', text: 'Error changing password' });
+            setTimeout(() => {
+                setMessage({ type: '', text: '' });
+            }, 3000);
         }
     };
 
@@ -127,11 +146,19 @@ const Profile = () => {
                             {!isEditing ? (
                                 <>
                                     <div className="profile-details">
-                                        <div className="input-group email-group">
-                                            <MdOutlineMail className="icon" />
-                                            <span>{initialProfileValues.email}</span>
-                                            <MdVerified className="verified-icon" />
+                                        <img src={ProfilePhoto} className="profile-photo" alt={ProfilePhoto2}/>
+
+                                        <div className="name-email-wrapper">
+                                            <label className="profile-name">
+                                                {localStorage.getItem("firstName")} {localStorage.getItem("lastName")}
+                                            </label>
+                                            <div className="email-group">
+                                                <MdOutlineMail className="icon" />
+                                                <span className="profile-email">{initialProfileValues.email}</span>
+                                                <MdVerified className="verified-icon" />
+                                            </div>
                                         </div>
+
                                         <button 
                                             className="button primary-button"
                                             onClick={() => setIsEditing(true)}
