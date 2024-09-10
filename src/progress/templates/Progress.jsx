@@ -61,7 +61,6 @@ const Progress = () => {
                 <title>Progress | READ</title>
             </Helmet>
             
-
             <main>
                 <ProgressTracker totalLevel={totalLevel} accuracy={accuracy.toFixed(2)} />
                 <div className="detailed-progress">
