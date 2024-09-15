@@ -22,7 +22,8 @@ const ReadingPage = () => {
         <div className="story-content">
           <p>{story?.content}</p> 
         </div>
-        <CaptureAudio />
+        {/* Pass the story title to CaptureAudio */}
+        <CaptureAudio storyTitle={story?.title} />
       </div>
     </>
   );
