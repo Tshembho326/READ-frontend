@@ -1,72 +1,92 @@
-import React, { useState, useRef } from 'react';
-import { PlayIcon, PauseIcon } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { PlayIcon, PauseIcon, LoaderIcon } from 'lucide-react';
 import '../static/css/CaptureAudio.css';
 
-const CaptureAudio = () => {
+const CaptureAudio = ({ storyTitle }) => {
   const [isRecording, setIsRecording] = useState(false);
-  const [transcription, setTranscription] = useState('');
+  const [missedWords, setMissedWords] = useState([]);
   const [alertMessage, setAlertMessage] = useState('');
+  const [isTranscribing, setIsTranscribing] = useState(false);
   const mediaRecorder = useRef(null);
   const audioChunks = useRef([]);
-  const websocketRef = useRef(null); 
 
-  const handleStartRecording = async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    mediaRecorder.current = new MediaRecorder(stream);
-
-    // Open a WebSocket connection to the server
-    websocketRef.current = new WebSocket('ws://127.0.0.1:8000/ws/transcribe/');
-
-    websocketRef.current.onopen = () => {
-      console.log('WebSocket connection established');
-    };
-
-    websocketRef.current.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      if (data.alert) {
-        setAlertMessage(data.alert); // Display alert if mistakes were made
-      } else {
-        setTranscription(data.transcription); // Set the transcription text
+  useEffect(() => {
+    return () => {
+      // Cleanup mediaRecorder on unmount
+      if (mediaRecorder.current && mediaRecorder.current.state !== 'inactive') {
+        mediaRecorder.current.stop();
       }
     };
+  }, []);
 
-    websocketRef.current.onerror = (error) => {
-      console.error('WebSocket error:', error);
-    };
+  const handleStartRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorder.current = new MediaRecorder(stream);
 
-    websocketRef.current.onclose = () => {
-      console.log('WebSocket connection closed');
-    };
-
-    mediaRecorder.current.ondataavailable = (event) => {
-      audioChunks.current.push(event.data);
-    };
-
-    mediaRecorder.current.onstop = async () => {
-      const audioBlob = new Blob(audioChunks.current, { type: 'audio/wav' });
-      audioChunks.current = [];
-
-      const reader = new FileReader();
-      reader.readAsDataURL(audioBlob);
-      reader.onloadend = () => {
-        const base64AudioMessage = reader.result.split(',')[1]; // Extract the base64 string
-
-        // Send the audio data to the WebSocket server
-        websocketRef.current.send(JSON.stringify({ audio: base64AudioMessage }));
+      mediaRecorder.current.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunks.current.push(event.data);
+        }
       };
-    };
 
-    mediaRecorder.current.start();
-    setIsRecording(true);
+      mediaRecorder.current.onstop = () => {
+        sendFullAudio(); // Send full audio after stopping
+      };
+
+      mediaRecorder.current.start();
+      setIsRecording(true);
+    } catch (error) {
+      console.error('Error starting recording:', error);
+      setAlertMessage('Error accessing the microphone.');
+    }
   };
 
   const handleStopRecording = () => {
-    mediaRecorder.current.stop();
+    if (mediaRecorder.current && mediaRecorder.current.state !== 'inactive') {
+      mediaRecorder.current.stop();
+    }
     setIsRecording(false);
+  };
 
-    // Close WebSocket connection after recording
-    if (websocketRef.current) {
-      websocketRef.current.close();
+  const getCookie = (name) => {
+    const cookieValue = document.cookie.split('; ').find(row => row.startsWith(name + '='));
+    return cookieValue ? decodeURIComponent(cookieValue.split('=')[1]) : null;
+  };
+
+  const sendFullAudio = () => {
+    if (audioChunks.current.length > 0) {
+      const audioBlob = new Blob(audioChunks.current, { type: 'audio/webm' }); // Changed to 'audio/webm' for better compatibility
+      audioChunks.current = []; // Reset the audio chunks
+
+      const formData = new FormData();
+      formData.append('audio', audioBlob);
+      formData.append('title', storyTitle); // Add story title to the formData
+
+      const csrfToken = getCookie('csrftoken');
+      setIsTranscribing(true); // Show transcribing message/loader
+
+      fetch('http://127.0.0.1:8000/transcribe/', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-CSRFToken': csrfToken,
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        setIsTranscribing(false); // Hide loader
+        if (data.error) {
+          setAlertMessage(data.error);
+        } else {
+          setMissedWords(data.missed_words); // Display missed words
+        }
+      })
+      .catch(error => {
+        console.error('Error sending audio:', error);
+        setAlertMessage('Error sending audio.');
+        setIsTranscribing(false); // Hide loader on error
+      });
     }
   };
 
@@ -81,15 +101,28 @@ const CaptureAudio = () => {
         </button>
         {isRecording && <div className="wave-effect"></div>}
       </div>
+
+      {isTranscribing && (
+        <div className="transcribing-message">
+          <LoaderIcon className="loader" /> {/* Loader to indicate progress */}
+          <p>Transcribing your audio, please wait...</p>
+        </div>
+      )}
+
       {alertMessage && (
         <div className="alert-container">
           <p>{alertMessage}</p>
         </div>
       )}
-      {transcription && !alertMessage && (
-        <div className="transcription-container">
-          <h2>Transcription:</h2>
-          <p>{transcription}</p>
+
+      {missedWords.length > 0 && !alertMessage && (
+        <div className="missed-words-container">
+          <h2>Missed Words:</h2>
+          <ul>
+            {missedWords.map((word, index) => (
+              <li key={index}>{word}</li>
+            ))}
+          </ul>
         </div>
       )}
     </div>
