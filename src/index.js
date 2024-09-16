@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route} from 'react-router-dom';
 import {LoginFunctionality, SignUpFunctionality, ResetPasswordFunctionality,
    ForgotPasswordFunctionality, GetStartedFunctionality,
-   ReadingPageFunctionality, LibraryFunctionality, ProfileFunctionality,ProgressFunctionality, HomeFunctionality} from './App';
+   ReadingPageFunctionality, LibraryFunctionality, ProfileFunctionality,ProgressFunctionality, HomeFunctionality, EndSessionFunctionality} from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -19,7 +19,7 @@ root.render(
       <Route path='/profile/' element={<ProfileFunctionality/>} />
       <Route path='/progress/' element={<ProgressFunctionality />} />
       <Route path='/home/' element={<HomeFunctionality/>} />
-      
+      <Route path='/end-session/' element={<EndSessionFunctionality/>} />
     </Routes>
   </BrowserRouter>
 );

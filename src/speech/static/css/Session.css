@@ -1,0 +1,97 @@
+/* Basic reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Container styling */
+.container4 {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #ffffff;
+    color: #333;
+}
+
+/* Header styling */
+.header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #ddd;
+}
+
+.back-button {
+    margin-right: 20px;
+    font-size: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* Content styling */
+.content {
+    text-align: center;
+    padding: 20px;
+}
+
+h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+/* Card styling */
+.card3 {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    color: rgb(0, 0, 0);
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+    border-radius: 58px;
+    box-shadow: 6px 7px 8px #888;
+    width: 400px;
+    border: 3px solid #fbaa19;
+}
+
+.level {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    padding: 10px;
+    display: flex;
+    font-size: larger;
+    flex-direction: row-reverse;
+}
+
+.emoji {
+    font-size: 50px;
+    margin: 20px 0;
+}
+
+h3 {
+    font-size: 22px;
+    margin: 10px 0;
+}
+
+blockquote {
+    font-style: italic;
+    margin: 20px 0;
+}
+
+/* Next session button */
+.next-session {
+    background-color: #000;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}

@@ -9,6 +9,7 @@ import Profile from "./ManageAccount/templates/Profile";
 import ReadingPage from "./speech/templates/ReadingPage";
 import Progress from "./progress/templates/Progress";
 import Home from "./home/tamplates/Home"
+import EndSession from "./speech/templates/SessionPage"
 
 
 export function SignUpFunctionality() {
@@ -49,3 +50,8 @@ export function ProfileFunctionality() {
 export function ProgressFunctionality() {
   return <Progress />
 }
+
+export function EndSessionFunctionality() {
+  return <EndSession />
+}
+
