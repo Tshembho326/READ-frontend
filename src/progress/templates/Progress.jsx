@@ -10,14 +10,21 @@ import ProgressTracker from '../../home/tamplates/Progress'; // Import the Progr
 
 const fetchDataFromAPI = async () => {
     try {
-        const response = await fetch('http://127.0.0.1:8000/progress/');
+        const response = await fetch('http://127.0.0.1:8000/progress/', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+            credentials: 'include', // Ensure cookies are sent with the request
+            
+        });
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
         return await response.json();
     } catch (error) {
         console.error('Failed to fetch data:', error);
-        return { totalReads: 0, correctReads: 0 }; 
+        return {  total_words: 0, correct_words: 0, progress_percentage: 0, accuracy: 0 }; 
     }
 };
 
@@ -36,10 +43,10 @@ const Progress = () => {
     useEffect(() => {
         const updateProgress = async () => {
             const data = await fetchDataFromAPI();
-            const totalReads = data.totalReads;
-            const correctReads = data.correctReads;
+            const totalReads = data.total_words;
+            const correctReads = data.correct_words;
             setTotalLevel(totalReads);
-            const calculatedAccuracy = totalReads > 0 ? (correctReads / totalReads) * 100 : 75;
+            const calculatedAccuracy = totalReads > 0 ? data.progress_percentage : 0;
             setAccuracy(calculatedAccuracy);
             setDetailedProgress([
                 { level: 'Easy', levelValue: 1, progress: 70 },

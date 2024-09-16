@@ -5,6 +5,7 @@ import '../static/css/CaptureAudio.css';
 const CaptureAudio = ({ storyTitle }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [missedWords, setMissedWords] = useState([]);
+  const [audioFiles, setAudioFiles] = useState([]); // New state for audio files URLs
   const [alertMessage, setAlertMessage] = useState('');
   const [isTranscribing, setIsTranscribing] = useState(false);
   const mediaRecorder = useRef(null);
@@ -80,6 +81,7 @@ const CaptureAudio = ({ storyTitle }) => {
           setAlertMessage(data.error);
         } else {
           setMissedWords(data.missed_words); // Display missed words
+          setAudioFiles(data.audio_files); // Set audio files URLs
         }
       })
       .catch(error => {
@@ -123,6 +125,19 @@ const CaptureAudio = ({ storyTitle }) => {
               <li key={index}>{word}</li>
             ))}
           </ul>
+          {audioFiles.length > 0 && (
+            <div className="audio-files-container">
+              <h3>Audio for Missed Words:</h3>
+              {audioFiles.map((url, index) => (
+                <div key={index} className="audio-player">
+                  <audio controls>
+                    <source src={url} type="audio/wav" />
+                    Your browser does not support the audio element.
+                  </audio>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>

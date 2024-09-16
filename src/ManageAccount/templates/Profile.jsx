@@ -109,14 +109,40 @@ const Profile = () => {
         }
     };
 
+    const handleLogout = async () => {
+        const confirmed = window.confirm('Are you sure you want to log out?');
+        if (confirmed) {
+            try {
+                const response = await fetch('http://127.0.0.1:8000/logout/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: "include",
+                    body: JSON.stringify({
+                        username: initialProfileValues.email,
+                    }),
+                });
+
+                if (response.ok) {
+                    localStorage.clear(); 
+                    window.location.href = '/'; 
+                } else {
+                    setMessage({ type: 'error', text: 'Failed to log out' });
+                }
+            } catch (error) {
+                setMessage({ type: 'error', text: 'Error occurred while logging out' });
+            }
+        }
+    };
+
     return (
         <>
             <Helmet>
                 <title>Personal Details | READ</title>
             </Helmet>
-            <Header/>
+            <Header />
             <div className="profile-container">
-
                 <h1 className="title">Personal Info</h1>
 
                 <div className="tabs">
@@ -132,6 +158,12 @@ const Profile = () => {
                     >
                         Security
                     </button>
+                    <button
+                        className="tab-button logout-button"
+                        onClick={handleLogout}
+                    >
+                        Logout
+                    </button>
                 </div>
 
                 <div className="card">
@@ -146,7 +178,7 @@ const Profile = () => {
                             {!isEditing ? (
                                 <>
                                     <div className="profile-details">
-                                        <img src={ProfilePhoto} className="profile-photo" alt={ProfilePhoto2}/>
+                                        <img src={ProfilePhoto} className="profile-photo" alt={ProfilePhoto2} />
 
                                         <div className="name-email-wrapper">
                                             <label className="profile-name">
@@ -159,7 +191,7 @@ const Profile = () => {
                                             </div>
                                         </div>
 
-                                        <button 
+                                        <button
                                             className="button primary-button"
                                             onClick={() => setIsEditing(true)}
                                         >
@@ -227,7 +259,7 @@ const Profile = () => {
                                         <ErrorMessage name="newPassword" component="div" className="error-message" />
                                     </div>
                                     <div className="field">
-                                        <label htmlFor="confirmPassword" className="label">Confirm New Password</label>
+                                        <label htmlFor="confirmPassword" className="label">Confirm Password</label>
                                         <Field type="password" name="confirmPassword" className="input" />
                                         <ErrorMessage name="confirmPassword" component="div" className="error-message" />
                                     </div>
