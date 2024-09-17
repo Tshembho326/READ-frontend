@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route} from 'react-router-dom';
 import {LoginFunctionality, SignUpFunctionality, ResetPasswordFunctionality,
    ForgotPasswordFunctionality, GetStartedFunctionality,
-   ReadingPageFunctionality, LibraryFunctionality, ProfileFunctionality,ProgressFunctionality, HomeFunctionality, EndSessionFunctionality} from './App';
+   ReadingPageFunctionality, LibraryFunctionality, ProfileFunctionality,
+   ProgressFunctionality, HomeFunctionality, EndSessionFunctionality} from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

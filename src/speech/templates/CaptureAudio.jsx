@@ -1,43 +1,42 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { PlayIcon, PauseIcon } from 'lucide-react';
-import { LiveAudioVisualizer } from 'react-audio-visualize';
+import { PlayIcon, PauseIcon, LoaderIcon} from 'lucide-react';
+import { LiveAudioVisualizer } from 'react-audio-visualize'; // Correct import for LiveAudioVisualizer
 import '../static/css/CaptureAudio.css';
 
 const CaptureAudio = ({ storyTitle }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [missedWords, setMissedWords] = useState([]);
-  const [audioFiles, setAudioFiles] = useState([]);
+  const [audioFiles, setAudioFiles] = useState([]); // New state for audio files URLs
   const [alertMessage, setAlertMessage] = useState('');
   const [isTranscribing, setIsTranscribing] = useState(false);
-  const [mediaRecorder, setMediaRecorder] = useState(null); // State for mediaRecorder
+  const mediaRecorder = useRef(null);
   const audioChunks = useRef([]);
 
   useEffect(() => {
     return () => {
       // Cleanup mediaRecorder on unmount
-      if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-        mediaRecorder.stop();
+      if (mediaRecorder.current && mediaRecorder.current.state !== 'inactive') {
+        mediaRecorder.current.stop();
       }
     };
-  }, [mediaRecorder]);
+  }, []);
 
   const handleStartRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const recorder = new MediaRecorder(stream);
-      setMediaRecorder(recorder); // Set mediaRecorder state
+      mediaRecorder.current = new MediaRecorder(stream);
 
-      recorder.ondataavailable = (event) => {
+      mediaRecorder.current.ondataavailable = (event) => {
         if (event.data.size > 0) {
           audioChunks.current.push(event.data);
         }
       };
 
-      recorder.onstop = () => {
+      mediaRecorder.current.onstop = () => {
         sendFullAudio(); // Send full audio after stopping
       };
 
-      recorder.start();
+      mediaRecorder.current.start();
       setIsRecording(true);
     } catch (error) {
       console.error('Error starting recording:', error);
@@ -46,8 +45,8 @@ const CaptureAudio = ({ storyTitle }) => {
   };
 
   const handleStopRecording = () => {
-    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-      mediaRecorder.stop();
+    if (mediaRecorder.current && mediaRecorder.current.state !== 'inactive') {
+      mediaRecorder.current.stop();
     }
     setIsRecording(false);
   };
@@ -59,12 +58,12 @@ const CaptureAudio = ({ storyTitle }) => {
 
   const sendFullAudio = () => {
     if (audioChunks.current.length > 0) {
-      const audioBlob = new Blob(audioChunks.current, { type: 'audio/webm' });
+      const audioBlob = new Blob(audioChunks.current, { type: 'audio/webm' }); // Changed to 'audio/webm' for better compatibility
       audioChunks.current = []; // Reset the audio chunks
 
       const formData = new FormData();
       formData.append('audio', audioBlob);
-      formData.append('title', storyTitle);
+      formData.append('title', storyTitle); // Add story title to the formData
 
       const csrfToken = getCookie('csrftoken');
       setIsTranscribing(true); // Show transcribing message/loader
@@ -103,20 +102,24 @@ const CaptureAudio = ({ storyTitle }) => {
         >
           {isRecording ? <PauseIcon className="icon" /> : <PlayIcon className="icon" />}
         </button>
-        {isRecording && (
-          <LiveAudioVisualizer
-            mediaRecorder={mediaRecorder}
-            width={200}
-            height={75}
-          />
-        )}
       </div>
 
-      {isTranscribing && !isRecording && (
+      {/* Add LiveAudioVisualizer when recording */}
+      {isRecording && (
+        <LiveAudioVisualizer
+          mediaRecorder={mediaRecorder.current} // Pass the mediaRecorder ref here
+          width={200}
+          height={75}
+        />
+      )}
+
+      {isTranscribing && (
         <div className="transcribing-message">
+          <LoaderIcon className="loader" /> {/* Loader to indicate progress */}
           <p>Transcribing your audio, please wait...</p>
         </div>
       )}
+
 
       {alertMessage && (
         <div className="alert-container">
@@ -132,7 +135,7 @@ const CaptureAudio = ({ storyTitle }) => {
               <li key={index}>{word}</li>
             ))}
           </ul>
-          {audioFiles.length > 0 && (
+          {/* {audioFiles.length > 0 && (
             <div className="audio-files-container">
               <h3>Audio for Missed Words:</h3>
               {audioFiles.map((url, index) => (
@@ -144,7 +147,7 @@ const CaptureAudio = ({ storyTitle }) => {
                 </div>
               ))}
             </div>
-          )}
+          )} */}
         </div>
       )}
     </div>
