@@ -1,41 +1,43 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { PlayIcon, PauseIcon, LoaderIcon } from 'lucide-react';
+import { PlayIcon, PauseIcon } from 'lucide-react';
+import { LiveAudioVisualizer } from 'react-audio-visualize';
 import '../static/css/CaptureAudio.css';
 
 const CaptureAudio = ({ storyTitle }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [missedWords, setMissedWords] = useState([]);
-  const [audioFiles, setAudioFiles] = useState([]); // New state for audio files URLs
+  const [audioFiles, setAudioFiles] = useState([]);
   const [alertMessage, setAlertMessage] = useState('');
   const [isTranscribing, setIsTranscribing] = useState(false);
-  const mediaRecorder = useRef(null);
+  const [mediaRecorder, setMediaRecorder] = useState(null); // State for mediaRecorder
   const audioChunks = useRef([]);
 
   useEffect(() => {
     return () => {
       // Cleanup mediaRecorder on unmount
-      if (mediaRecorder.current && mediaRecorder.current.state !== 'inactive') {
-        mediaRecorder.current.stop();
+      if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+        mediaRecorder.stop();
       }
     };
-  }, []);
+  }, [mediaRecorder]);
 
   const handleStartRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      mediaRecorder.current = new MediaRecorder(stream);
+      const recorder = new MediaRecorder(stream);
+      setMediaRecorder(recorder); // Set mediaRecorder state
 
-      mediaRecorder.current.ondataavailable = (event) => {
+      recorder.ondataavailable = (event) => {
         if (event.data.size > 0) {
           audioChunks.current.push(event.data);
         }
       };
 
-      mediaRecorder.current.onstop = () => {
+      recorder.onstop = () => {
         sendFullAudio(); // Send full audio after stopping
       };
 
-      mediaRecorder.current.start();
+      recorder.start();
       setIsRecording(true);
     } catch (error) {
       console.error('Error starting recording:', error);
@@ -44,8 +46,8 @@ const CaptureAudio = ({ storyTitle }) => {
   };
 
   const handleStopRecording = () => {
-    if (mediaRecorder.current && mediaRecorder.current.state !== 'inactive') {
-      mediaRecorder.current.stop();
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+      mediaRecorder.stop();
     }
     setIsRecording(false);
   };
@@ -57,12 +59,12 @@ const CaptureAudio = ({ storyTitle }) => {
 
   const sendFullAudio = () => {
     if (audioChunks.current.length > 0) {
-      const audioBlob = new Blob(audioChunks.current, { type: 'audio/webm' }); // Changed to 'audio/webm' for better compatibility
+      const audioBlob = new Blob(audioChunks.current, { type: 'audio/webm' });
       audioChunks.current = []; // Reset the audio chunks
 
       const formData = new FormData();
       formData.append('audio', audioBlob);
-      formData.append('title', storyTitle); // Add story title to the formData
+      formData.append('title', storyTitle);
 
       const csrfToken = getCookie('csrftoken');
       setIsTranscribing(true); // Show transcribing message/loader
@@ -101,12 +103,17 @@ const CaptureAudio = ({ storyTitle }) => {
         >
           {isRecording ? <PauseIcon className="icon" /> : <PlayIcon className="icon" />}
         </button>
-        {isRecording && <div className="wave-effect"></div>}
+        {isRecording && (
+          <LiveAudioVisualizer
+            mediaRecorder={mediaRecorder}
+            width={200}
+            height={75}
+          />
+        )}
       </div>
 
-      {isTranscribing && (
+      {isTranscribing && !isRecording && (
         <div className="transcribing-message">
-          <LoaderIcon className="loader" /> {/* Loader to indicate progress */}
           <p>Transcribing your audio, please wait...</p>
         </div>
       )}
