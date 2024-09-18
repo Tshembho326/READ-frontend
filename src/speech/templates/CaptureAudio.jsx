@@ -1,22 +1,26 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { PlayIcon, PauseIcon, LoaderIcon} from 'lucide-react';
-import { LiveAudioVisualizer } from 'react-audio-visualize'; // Correct import for LiveAudioVisualizer
+import { PlayIcon, PauseIcon, LoaderIcon } from 'lucide-react';
+import { LiveAudioVisualizer } from 'react-audio-visualize';
 import '../static/css/CaptureAudio.css';
 
-const CaptureAudio = ({ storyTitle }) => {
+// Define the chunk size in milliseconds
+const CHUNK_SIZE_MS = 5000; // 5 seconds
+
+const CaptureAudio = ({ storyTitle, onStartRecording, onPauseRecording }) => {
   const [isRecording, setIsRecording] = useState(false);
-  const [missedWords, setMissedWords] = useState([]);
-  const [audioFiles, setAudioFiles] = useState([]); // New state for audio files URLs
   const [alertMessage, setAlertMessage] = useState('');
   const [isTranscribing, setIsTranscribing] = useState(false);
   const mediaRecorder = useRef(null);
-  const audioChunks = useRef([]);
+  const audioChunksBuffer = useRef([]);
+  const recordingTimer = useRef(null);
 
   useEffect(() => {
     return () => {
-      // Cleanup mediaRecorder on unmount
       if (mediaRecorder.current && mediaRecorder.current.state !== 'inactive') {
         mediaRecorder.current.stop();
+      }
+      if (recordingTimer.current) {
+        clearInterval(recordingTimer.current);
       }
     };
   }, []);
@@ -28,16 +32,25 @@ const CaptureAudio = ({ storyTitle }) => {
 
       mediaRecorder.current.ondataavailable = (event) => {
         if (event.data.size > 0) {
-          audioChunks.current.push(event.data);
+          audioChunksBuffer.current.push(event.data);
         }
       };
 
       mediaRecorder.current.onstop = () => {
-        sendFullAudio(); // Send full audio after stopping
+        sendChunkedAudio(true);
       };
 
       mediaRecorder.current.start();
+
+      // Start a timer to send audio chunks every 5 seconds
+      recordingTimer.current = setInterval(() => {
+        sendChunkedAudio();
+      }, CHUNK_SIZE_MS);
+
       setIsRecording(true);
+      if (onStartRecording) {
+        onStartRecording();
+      }
     } catch (error) {
       console.error('Error starting recording:', error);
       setAlertMessage('Error accessing the microphone.');
@@ -49,6 +62,9 @@ const CaptureAudio = ({ storyTitle }) => {
       mediaRecorder.current.stop();
     }
     setIsRecording(false);
+    if (onPauseRecording) {
+      onPauseRecording();
+    }
   };
 
   const getCookie = (name) => {
@@ -56,17 +72,17 @@ const CaptureAudio = ({ storyTitle }) => {
     return cookieValue ? decodeURIComponent(cookieValue.split('=')[1]) : null;
   };
 
-  const sendFullAudio = () => {
-    if (audioChunks.current.length > 0) {
-      const audioBlob = new Blob(audioChunks.current, { type: 'audio/webm' }); // Changed to 'audio/webm' for better compatibility
-      audioChunks.current = []; // Reset the audio chunks
+  const sendChunkedAudio = (isFinal = false) => {
+    if (audioChunksBuffer.current.length > 0) {
+      const audioBlob = new Blob(audioChunksBuffer.current, { type: 'audio/webm' });
+      audioChunksBuffer.current = [];
 
       const formData = new FormData();
       formData.append('audio', audioBlob);
-      formData.append('title', storyTitle); // Add story title to the formData
+      formData.append('title', storyTitle);
 
       const csrfToken = getCookie('csrftoken');
-      setIsTranscribing(true); // Show transcribing message/loader
+      setIsTranscribing(true);
 
       fetch('http://127.0.0.1:8000/transcribe/', {
         method: 'POST',
@@ -77,18 +93,17 @@ const CaptureAudio = ({ storyTitle }) => {
       })
       .then(response => response.json())
       .then(data => {
-        setIsTranscribing(false); // Hide loader
+        setIsTranscribing(false);
         if (data.error) {
           setAlertMessage(data.error);
         } else {
-          setMissedWords(data.missed_words); // Display missed words
-          setAudioFiles(data.audio_files); // Set audio files URLs
+          console.log("Transcription:", data.transcription); // Print transcription to console
         }
       })
       .catch(error => {
         console.error('Error sending audio:', error);
         setAlertMessage('Error sending audio.');
-        setIsTranscribing(false); // Hide loader on error
+        setIsTranscribing(false);
       });
     }
   };
@@ -104,10 +119,9 @@ const CaptureAudio = ({ storyTitle }) => {
         </button>
       </div>
 
-      {/* Add LiveAudioVisualizer when recording */}
       {isRecording && (
         <LiveAudioVisualizer
-          mediaRecorder={mediaRecorder.current} // Pass the mediaRecorder ref here
+          mediaRecorder={mediaRecorder.current}
           width={200}
           height={75}
         />
@@ -115,39 +129,14 @@ const CaptureAudio = ({ storyTitle }) => {
 
       {isTranscribing && (
         <div className="transcribing-message">
-          <LoaderIcon className="loader" /> {/* Loader to indicate progress */}
+          <LoaderIcon className="loader" />
           <p>Transcribing your audio, please wait...</p>
         </div>
       )}
 
-
       {alertMessage && (
         <div className="alert-container">
           <p>{alertMessage}</p>
-        </div>
-      )}
-
-      {missedWords.length > 0 && !alertMessage && (
-        <div className="missed-words-container">
-          <h2>Missed Words:</h2>
-          <ul>
-            {missedWords.map((word, index) => (
-              <li key={index}>{word}</li>
-            ))}
-          </ul>
-          {/* {audioFiles.length > 0 && (
-            <div className="audio-files-container">
-              <h3>Audio for Missed Words:</h3>
-              {audioFiles.map((url, index) => (
-                <div key={index} className="audio-player">
-                  <audio controls>
-                    <source src={url} type="audio/wav" />
-                    Your browser does not support the audio element.
-                  </audio>
-                </div>
-              ))}
-            </div>
-          )} */}
         </div>
       )}
     </div>
