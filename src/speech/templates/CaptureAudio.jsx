@@ -3,13 +3,11 @@ import { PlayIcon, PauseIcon, LoaderIcon } from 'lucide-react';
 import { LiveAudioVisualizer } from 'react-audio-visualize';
 import '../static/css/CaptureAudio.css';
 
-// Define the chunk size in milliseconds
-const CHUNK_SIZE_MS = 5000; // 5 seconds
-
+const CHUNK_SIZE_MS = 5000; 
 const CaptureAudio = ({ storyTitle, onStartRecording, onPauseRecording }) => {
   const [isRecording, setIsRecording] = useState(false);
-  const [missedWords, setMissedWords] = useState([]); // Initialize as empty array
-  const [audioFiles, setAudioFiles] = useState([]);   // Initialize as empty array
+  const [missedWords, setMissedWords] = useState([]); 
+  const [audioFiles, setAudioFiles] = useState([]);   
   const [alertMessage, setAlertMessage] = useState('');
   const [isTranscribing, setIsTranscribing] = useState(false);
   const mediaRecorder = useRef(null);
@@ -44,7 +42,6 @@ const CaptureAudio = ({ storyTitle, onStartRecording, onPauseRecording }) => {
       mediaRecorder.current.start();
       setIsRecording(true);
 
-      // Notify ReadingPage that recording has started
       if (onStartRecording) {
         onStartRecording();
       }
@@ -60,7 +57,6 @@ const CaptureAudio = ({ storyTitle, onStartRecording, onPauseRecording }) => {
     }
     setIsRecording(false);
 
-    // Notify ReadingPage that recording has been paused
     if (onPauseRecording) {
       onPauseRecording();
     }
