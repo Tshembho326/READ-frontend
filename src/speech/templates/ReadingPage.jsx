@@ -10,59 +10,44 @@ const ReadingPage = () => {
   const location = useLocation();
   const { story } = location.state || {};
 
-  const [currentLineIndex, setCurrentLineIndex] = useState(0);
+  const [currentLineIndex, setCurrentLineIndex] = useState(0); 
   const [isRecordingStarted, setIsRecordingStarted] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
+  const [isPaused, setIsPaused] = useState(false); // To manage pause state
 
   const storyLines = story?.content ? story.content.split('.') : [];
 
+  // Effect to manage the line display when recording starts
   useEffect(() => {
     let interval;
     if (isRecordingStarted && !isPaused && currentLineIndex < storyLines.length) {
       interval = setInterval(() => {
         setCurrentLineIndex(prevIndex => {
           if (prevIndex < storyLines.length - 1) {
-            // Send current line to the backend for phoneme conversion
-            fetch('http://127.0.0.1:8000/convert-to-phonemes/', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': document.cookie.split('; ').find(row => row.startsWith('csrftoken='))?.split('=')[1] || '',
-              },
-              body: JSON.stringify({ text: storyLines[prevIndex] })
-            })
-            .then(response => response.json())
-            .then(data => {
-              if (data.phonemes) {
-                console.log(`Phonemes for line ${prevIndex}:`, data.phonemes);
-              } else if (data.error) {
-                console.error('Error converting to phonemes:', data.error);
-              }
-            })
-            .catch(error => console.error('Error:', error));
-
             return prevIndex + 1;
           } else {
-            clearInterval(interval);
+            clearInterval(interval); // Clear interval when done
             return prevIndex;
           }
         });
-      }, 5000);
+      }, 5000); // Display each line for 5 seconds
     } else if (isPaused) {
-      clearInterval(interval);
+      clearInterval(interval); // Clear interval if paused
     }
     return () => clearInterval(interval);
-  }, [isRecordingStarted, isPaused, currentLineIndex, storyLines]);
+  }, [isRecordingStarted, isPaused, currentLineIndex, storyLines.length]);
 
+  // Callback for CaptureAudio when recording starts
   const handleRecordingStart = () => {
     setIsRecordingStarted(true);
-    setCurrentLineIndex(0);
+    setCurrentLineIndex(0); // Start from the first line
   };
 
+  // Callback for CaptureAudio when recording is paused
   const handlePauseRecording = () => {
     setIsPaused(true);
   };
 
+  // Callback for CaptureAudio when recording resumes
   const handleResumeRecording = () => {
     setIsPaused(false);
   };
@@ -76,6 +61,7 @@ const ReadingPage = () => {
       <div className="reading-page">
         <h1>{story?.title}</h1>
         <img src={Logo} alt="Logo" className="login-logo" />
+
         <div className="story-content">
           {storyLines.map((line, index) => (
             <p 
@@ -86,12 +72,15 @@ const ReadingPage = () => {
             </p>
           ))}
         </div>
+
+        {/* Pass callbacks to CaptureAudio */}
         <CaptureAudio 
           storyTitle={story?.title}
           onStartRecording={handleRecordingStart}
           onPauseRecording={handlePauseRecording}
           onResumeRecording={handleResumeRecording}
         />
+        
       </div>
     </>
   );
