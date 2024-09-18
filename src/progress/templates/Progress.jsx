@@ -14,7 +14,7 @@ const fetchDataFromAPI = async (token) => {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
-                'Authorization': `Token ${token}`,  // Include the token in the Authorization header
+                'Authorization': `Token ${token}`,  
             },
             credentials: 'include',
         });

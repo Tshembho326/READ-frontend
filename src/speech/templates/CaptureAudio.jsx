@@ -1,20 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { PlayIcon, PauseIcon, LoaderIcon} from 'lucide-react';
-import { LiveAudioVisualizer } from 'react-audio-visualize'; // Correct import for LiveAudioVisualizer
+import { PlayIcon, PauseIcon, LoaderIcon } from 'lucide-react';
+import { LiveAudioVisualizer } from 'react-audio-visualize';
 import '../static/css/CaptureAudio.css';
 
-const CaptureAudio = ({ storyTitle }) => {
+// Define the chunk size in milliseconds
+const CHUNK_SIZE_MS = 5000; // 5 seconds
+
+const CaptureAudio = ({ storyTitle, onStartRecording, onPauseRecording }) => {
   const [isRecording, setIsRecording] = useState(false);
-  const [missedWords, setMissedWords] = useState([]);
-  const [audioFiles, setAudioFiles] = useState([]); // New state for audio files URLs
+  const [missedWords, setMissedWords] = useState([]); // Initialize as empty array
+  const [audioFiles, setAudioFiles] = useState([]);   // Initialize as empty array
   const [alertMessage, setAlertMessage] = useState('');
   const [isTranscribing, setIsTranscribing] = useState(false);
   const mediaRecorder = useRef(null);
-  const audioChunks = useRef([]);
+  const audioChunksBuffer = useRef([]);
 
   useEffect(() => {
     return () => {
-      // Cleanup mediaRecorder on unmount
       if (mediaRecorder.current && mediaRecorder.current.state !== 'inactive') {
         mediaRecorder.current.stop();
       }
@@ -28,16 +30,24 @@ const CaptureAudio = ({ storyTitle }) => {
 
       mediaRecorder.current.ondataavailable = (event) => {
         if (event.data.size > 0) {
-          audioChunks.current.push(event.data);
+          audioChunksBuffer.current.push(event.data);
+          if (audioChunksBuffer.current.length * (CHUNK_SIZE_MS / 1000) >= CHUNK_SIZE_MS) {
+            sendChunkedAudio();
+          }
         }
       };
 
       mediaRecorder.current.onstop = () => {
-        sendFullAudio(); // Send full audio after stopping
+        sendChunkedAudio(true);
       };
 
       mediaRecorder.current.start();
       setIsRecording(true);
+
+      // Notify ReadingPage that recording has started
+      if (onStartRecording) {
+        onStartRecording();
+      }
     } catch (error) {
       console.error('Error starting recording:', error);
       setAlertMessage('Error accessing the microphone.');
@@ -49,6 +59,11 @@ const CaptureAudio = ({ storyTitle }) => {
       mediaRecorder.current.stop();
     }
     setIsRecording(false);
+
+    // Notify ReadingPage that recording has been paused
+    if (onPauseRecording) {
+      onPauseRecording();
+    }
   };
 
   const getCookie = (name) => {
@@ -56,17 +71,17 @@ const CaptureAudio = ({ storyTitle }) => {
     return cookieValue ? decodeURIComponent(cookieValue.split('=')[1]) : null;
   };
 
-  const sendFullAudio = () => {
-    if (audioChunks.current.length > 0) {
-      const audioBlob = new Blob(audioChunks.current, { type: 'audio/webm' }); // Changed to 'audio/webm' for better compatibility
-      audioChunks.current = []; // Reset the audio chunks
+  const sendChunkedAudio = (isFinal = false) => {
+    if (audioChunksBuffer.current.length > 0) {
+      const audioBlob = new Blob(audioChunksBuffer.current, { type: 'audio/webm' });
+      audioChunksBuffer.current = [];
 
       const formData = new FormData();
       formData.append('audio', audioBlob);
-      formData.append('title', storyTitle); // Add story title to the formData
+      formData.append('title', storyTitle);
 
       const csrfToken = getCookie('csrftoken');
-      setIsTranscribing(true); // Show transcribing message/loader
+      setIsTranscribing(true);
 
       fetch('http://127.0.0.1:8000/transcribe/', {
         method: 'POST',
@@ -77,18 +92,18 @@ const CaptureAudio = ({ storyTitle }) => {
       })
       .then(response => response.json())
       .then(data => {
-        setIsTranscribing(false); // Hide loader
+        setIsTranscribing(false);
         if (data.error) {
           setAlertMessage(data.error);
         } else {
-          setMissedWords(data.missed_words); // Display missed words
-          setAudioFiles(data.audio_files); // Set audio files URLs
+          setMissedWords(data.missed_words || []); // Ensure missed_words is an array
+          setAudioFiles(data.audio_files || []);   // Ensure audio_files is an array
         }
       })
       .catch(error => {
         console.error('Error sending audio:', error);
         setAlertMessage('Error sending audio.');
-        setIsTranscribing(false); // Hide loader on error
+        setIsTranscribing(false);
       });
     }
   };
@@ -104,10 +119,9 @@ const CaptureAudio = ({ storyTitle }) => {
         </button>
       </div>
 
-      {/* Add LiveAudioVisualizer when recording */}
       {isRecording && (
         <LiveAudioVisualizer
-          mediaRecorder={mediaRecorder.current} // Pass the mediaRecorder ref here
+          mediaRecorder={mediaRecorder.current}
           width={200}
           height={75}
         />
@@ -115,11 +129,10 @@ const CaptureAudio = ({ storyTitle }) => {
 
       {isTranscribing && (
         <div className="transcribing-message">
-          <LoaderIcon className="loader" /> {/* Loader to indicate progress */}
+          <LoaderIcon className="loader" />
           <p>Transcribing your audio, please wait...</p>
         </div>
       )}
-
 
       {alertMessage && (
         <div className="alert-container">
@@ -135,7 +148,7 @@ const CaptureAudio = ({ storyTitle }) => {
               <li key={index}>{word}</li>
             ))}
           </ul>
-          {/* {audioFiles.length > 0 && (
+          {audioFiles.length > 0 && (
             <div className="audio-files-container">
               <h3>Audio for Missed Words:</h3>
               {audioFiles.map((url, index) => (
@@ -147,7 +160,7 @@ const CaptureAudio = ({ storyTitle }) => {
                 </div>
               ))}
             </div>
-          )} */}
+          )}
         </div>
       )}
     </div>

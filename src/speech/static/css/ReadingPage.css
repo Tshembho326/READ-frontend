@@ -32,13 +32,15 @@ p {
   }
 }
 
-.highlight-yellow {
-  background-color: yellow;
-  font-weight: bold;
+.visible-line {
+  opacity: 1;
+  filter: none;
+  font-size: 1.1em;
+  transition: opacity 0.5s ease-in-out;
 }
 
-.highlight-red {
-  background-color: red;
-  color: white;
-  font-weight: bold;
+.blurry-line {
+  opacity: 0.3;
+  filter: blur(2px);
+  transition: opacity 0.5s ease-in-out;
 }
