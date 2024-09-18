@@ -3,24 +3,20 @@ import { PlayIcon, PauseIcon, LoaderIcon } from 'lucide-react';
 import { LiveAudioVisualizer } from 'react-audio-visualize';
 import '../static/css/CaptureAudio.css';
 
-// Define the chunk size in milliseconds
-const CHUNK_SIZE_MS = 5000; // 5 seconds
-
+const CHUNK_SIZE_MS = 5000; 
 const CaptureAudio = ({ storyTitle, onStartRecording, onPauseRecording }) => {
   const [isRecording, setIsRecording] = useState(false);
+  const [missedWords, setMissedWords] = useState([]); 
+  const [audioFiles, setAudioFiles] = useState([]);   
   const [alertMessage, setAlertMessage] = useState('');
   const [isTranscribing, setIsTranscribing] = useState(false);
   const mediaRecorder = useRef(null);
   const audioChunksBuffer = useRef([]);
-  const recordingTimer = useRef(null);
 
   useEffect(() => {
     return () => {
       if (mediaRecorder.current && mediaRecorder.current.state !== 'inactive') {
         mediaRecorder.current.stop();
-      }
-      if (recordingTimer.current) {
-        clearInterval(recordingTimer.current);
       }
     };
   }, []);
@@ -33,6 +29,9 @@ const CaptureAudio = ({ storyTitle, onStartRecording, onPauseRecording }) => {
       mediaRecorder.current.ondataavailable = (event) => {
         if (event.data.size > 0) {
           audioChunksBuffer.current.push(event.data);
+          if (audioChunksBuffer.current.length * (CHUNK_SIZE_MS / 1000) >= CHUNK_SIZE_MS) {
+            sendChunkedAudio();
+          }
         }
       };
 
@@ -41,13 +40,8 @@ const CaptureAudio = ({ storyTitle, onStartRecording, onPauseRecording }) => {
       };
 
       mediaRecorder.current.start();
-
-      // Start a timer to send audio chunks every 5 seconds
-      recordingTimer.current = setInterval(() => {
-        sendChunkedAudio();
-      }, CHUNK_SIZE_MS);
-
       setIsRecording(true);
+
       if (onStartRecording) {
         onStartRecording();
       }
@@ -62,6 +56,7 @@ const CaptureAudio = ({ storyTitle, onStartRecording, onPauseRecording }) => {
       mediaRecorder.current.stop();
     }
     setIsRecording(false);
+
     if (onPauseRecording) {
       onPauseRecording();
     }
@@ -80,6 +75,7 @@ const CaptureAudio = ({ storyTitle, onStartRecording, onPauseRecording }) => {
       const formData = new FormData();
       formData.append('audio', audioBlob);
       formData.append('title', storyTitle);
+      formData.append('email', localStorage.getItem('email'))
 
       const csrfToken = getCookie('csrftoken');
       setIsTranscribing(true);
@@ -97,7 +93,8 @@ const CaptureAudio = ({ storyTitle, onStartRecording, onPauseRecording }) => {
         if (data.error) {
           setAlertMessage(data.error);
         } else {
-          console.log("Transcription:", data.transcription); // Print transcription to console
+          setMissedWords(data.missed_words || []); // Ensure missed_words is an array
+          setAudioFiles(data.audio_files || []);   // Ensure audio_files is an array
         }
       })
       .catch(error => {
@@ -137,6 +134,30 @@ const CaptureAudio = ({ storyTitle, onStartRecording, onPauseRecording }) => {
       {alertMessage && (
         <div className="alert-container">
           <p>{alertMessage}</p>
+        </div>
+      )}
+
+      {missedWords.length > 0 && !alertMessage && (
+        <div className="missed-words-container">
+          <h2>Missed Words:</h2>
+          <ul>
+            {missedWords.map((word, index) => (
+              <li key={index}>{word}</li>
+            ))}
+          </ul>
+          {audioFiles.length > 0 && (
+            <div className="audio-files-container">
+              <h3>Audio for Missed Words:</h3>
+              {audioFiles.map((url, index) => (
+                <div key={index} className="audio-player">
+                  <audio controls>
+                    <source src={url} type="audio/wav" />
+                    Your browser does not support the audio element.
+                  </audio>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>
