@@ -8,17 +8,19 @@ const CHUNK_SIZE_MS = 5000; // 5 seconds
 
 const CaptureAudio = ({ storyTitle, onStartRecording, onPauseRecording }) => {
   const [isRecording, setIsRecording] = useState(false);
-  const [missedWords, setMissedWords] = useState([]); // Initialize as empty array
-  const [audioFiles, setAudioFiles] = useState([]);   // Initialize as empty array
   const [alertMessage, setAlertMessage] = useState('');
   const [isTranscribing, setIsTranscribing] = useState(false);
   const mediaRecorder = useRef(null);
   const audioChunksBuffer = useRef([]);
+  const recordingTimer = useRef(null);
 
   useEffect(() => {
     return () => {
       if (mediaRecorder.current && mediaRecorder.current.state !== 'inactive') {
         mediaRecorder.current.stop();
+      }
+      if (recordingTimer.current) {
+        clearInterval(recordingTimer.current);
       }
     };
   }, []);
@@ -31,9 +33,6 @@ const CaptureAudio = ({ storyTitle, onStartRecording, onPauseRecording }) => {
       mediaRecorder.current.ondataavailable = (event) => {
         if (event.data.size > 0) {
           audioChunksBuffer.current.push(event.data);
-          if (audioChunksBuffer.current.length * (CHUNK_SIZE_MS / 1000) >= CHUNK_SIZE_MS) {
-            sendChunkedAudio();
-          }
         }
       };
 
@@ -42,9 +41,13 @@ const CaptureAudio = ({ storyTitle, onStartRecording, onPauseRecording }) => {
       };
 
       mediaRecorder.current.start();
-      setIsRecording(true);
 
-      // Notify ReadingPage that recording has started
+      // Start a timer to send audio chunks every 5 seconds
+      recordingTimer.current = setInterval(() => {
+        sendChunkedAudio();
+      }, CHUNK_SIZE_MS);
+
+      setIsRecording(true);
       if (onStartRecording) {
         onStartRecording();
       }
@@ -59,8 +62,6 @@ const CaptureAudio = ({ storyTitle, onStartRecording, onPauseRecording }) => {
       mediaRecorder.current.stop();
     }
     setIsRecording(false);
-
-    // Notify ReadingPage that recording has been paused
     if (onPauseRecording) {
       onPauseRecording();
     }
@@ -96,8 +97,7 @@ const CaptureAudio = ({ storyTitle, onStartRecording, onPauseRecording }) => {
         if (data.error) {
           setAlertMessage(data.error);
         } else {
-          setMissedWords(data.missed_words || []); // Ensure missed_words is an array
-          setAudioFiles(data.audio_files || []);   // Ensure audio_files is an array
+          console.log("Transcription:", data.transcription); // Print transcription to console
         }
       })
       .catch(error => {
@@ -137,30 +137,6 @@ const CaptureAudio = ({ storyTitle, onStartRecording, onPauseRecording }) => {
       {alertMessage && (
         <div className="alert-container">
           <p>{alertMessage}</p>
-        </div>
-      )}
-
-      {missedWords.length > 0 && !alertMessage && (
-        <div className="missed-words-container">
-          <h2>Missed Words:</h2>
-          <ul>
-            {missedWords.map((word, index) => (
-              <li key={index}>{word}</li>
-            ))}
-          </ul>
-          {audioFiles.length > 0 && (
-            <div className="audio-files-container">
-              <h3>Audio for Missed Words:</h3>
-              {audioFiles.map((url, index) => (
-                <div key={index} className="audio-player">
-                  <audio controls>
-                    <source src={url} type="audio/wav" />
-                    Your browser does not support the audio element.
-                  </audio>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
       )}
     </div>
