@@ -1,0 +1,36 @@
+.results-container {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .results-summary {
+    margin-bottom: 20px;
+  }
+  
+  .missed-words-container {
+    margin-top: 20px;
+  }
+  
+  .missed-words-container ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .audio-files-container {
+    margin-top: 20px;
+  }
+  
+  .audio-player {
+    margin-bottom: 10px;
+  }
+  
+  .audio-player audio {
+    width: 100%;
+  }
+  
+  .results-summary p {
+    margin: 5px 0;
+  }
+  

@@ -4,57 +4,24 @@
         "emojiSrc": "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Sports%20Medal.png",
         "quote": "Great start! You're getting the hang of basic words and sentences. Keep it up!"
     },
-
+    
     {
         "level": 2,
-        "emojiSrc": "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Sports%20Medal.png",
-        "quote": "Great start! You're getting the hang of basic words and sentences. Keep it up!"
+        "emojiSrc": "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Confetti%20Ball.png",
+        "quote": "Awesome progress! You're building confidence with more challenging words and sentences."
     },
-
     {
         "level": 3,
-        "emojiSrc": "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Confetti%20Ball.png",
-        "quote": "Awesome progress! You're building confidence with more challenging words and sentences."
+        "emojiSrc": "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Trophy.png",
+        "quote": "Fantastic job! You're reading fluently and understanding complex sentences."
     },
-
     {
         "level": 4,
-        "emojiSrc": "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Confetti%20Ball.png",
-        "quote": "Awesome progress! You're building confidence with more challenging words and sentences."
+        "emojiSrc": "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Star%20Struck.png",
+        "quote": "Incredible achievement! You're handling advanced material with great skill and understanding."
     },
-
     {
         "level": 5,
-        "emojiSrc": "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Trophy.png",
-        "quote": "Fantastic job! You're reading fluently and understanding complex sentences."
-    },
-
-    {
-        "level": 6,
-        "emojiSrc": "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Trophy.png",
-        "quote": "Fantastic job! You're reading fluently and understanding complex sentences."
-    },
-
-    {
-        "level": 7,
-        "emojiSrc": "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Star%20Struck.png",
-        "quote": "Incredible achievement! You're handling advanced material with great skill and understanding."
-    },
-
-    {
-        "level": 8,
-        "emojiSrc": "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Star%20Struck.png",
-        "quote": "Incredible achievement! You're handling advanced material with great skill and understanding."
-    },
-
-    {
-        "level": 9,
-        "emojiSrc": "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Partying%20Face.png",
-        "quote": "Remarkable! You're now an expert reader, mastering complex texts effortlessly."
-    },
-
-    {
-        "level": 10,
         "emojiSrc": "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Partying%20Face.png",
         "quote": "Remarkable! You're now an expert reader, mastering complex texts effortlessly."
     }

@@ -4,7 +4,8 @@ import { LiveAudioVisualizer } from 'react-audio-visualize';
 import '../static/css/CaptureAudio.css';
 
 const CHUNK_SIZE_MS = 5000; 
-const CaptureAudio = ({ storyTitle, onStartRecording, onPauseRecording }) => {
+
+const CaptureAudio = ({ storyTitle, onStartRecording, onPauseRecording, onResults }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [missedWords, setMissedWords] = useState([]); 
   const [audioFiles, setAudioFiles] = useState([]);   
@@ -95,6 +96,15 @@ const CaptureAudio = ({ storyTitle, onStartRecording, onPauseRecording }) => {
         } else {
           setMissedWords(data.missed_words || []); // Ensure missed_words is an array
           setAudioFiles(data.audio_files || []);   // Ensure audio_files is an array
+          // Pass the results to the parent component
+          if (onResults) {
+            onResults({
+              missedWords: data.missed_words || [],
+              audioFiles: data.audio_files || [],
+              totalWords: data.total_words || 0,
+              correctWords: data.correct_words || 0,
+            });
+          }
         }
       })
       .catch(error => {
@@ -134,30 +144,6 @@ const CaptureAudio = ({ storyTitle, onStartRecording, onPauseRecording }) => {
       {alertMessage && (
         <div className="alert-container">
           <p>{alertMessage}</p>
-        </div>
-      )}
-
-      {missedWords.length > 0 && !alertMessage && (
-        <div className="missed-words-container">
-          <h2>Missed Words:</h2>
-          <ul>
-            {missedWords.map((word, index) => (
-              <li key={index}>{word}</li>
-            ))}
-          </ul>
-          {audioFiles.length > 0 && (
-            <div className="audio-files-container">
-              <h3>Audio for Missed Words:</h3>
-              {audioFiles.map((url, index) => (
-                <div key={index} className="audio-player">
-                  <audio controls>
-                    <source src={url} type="audio/wav" />
-                    Your browser does not support the audio element.
-                  </audio>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
       )}
     </div>

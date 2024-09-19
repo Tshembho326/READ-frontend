@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { useLocation } from 'react-router-dom';
 import CaptureAudio from './CaptureAudio';
+import Results from './Results'; // Import the Results component
 import Logo from '../static/images/reading.png';
 import '../static/css/ReadingPage.css';
 import Header from '../../llibrary/tamplates/Header';
@@ -10,46 +11,86 @@ const ReadingPage = () => {
   const location = useLocation();
   const { story } = location.state || {};
 
-  const [currentLineIndex, setCurrentLineIndex] = useState(0); 
+  const [currentLineIndex, setCurrentLineIndex] = useState(0);
   const [isRecordingStarted, setIsRecordingStarted] = useState(false);
-  const [isPaused, setIsPaused] = useState(false); // To manage pause state
+  const [isPaused, setIsPaused] = useState(false);
+  const [results, setResults] = useState(null); // State for results
 
   const storyLines = story?.content ? story.content.split('.') : [];
 
-  // Effect to manage the line display when recording starts
   useEffect(() => {
     let interval;
     if (isRecordingStarted && !isPaused && currentLineIndex < storyLines.length) {
       interval = setInterval(() => {
         setCurrentLineIndex(prevIndex => {
           if (prevIndex < storyLines.length - 1) {
+
+            const linesToSend = storyLines.slice(0, prevIndex + 1); 
+            fetch('http://127.0.0.1:8000/convert-to-phonemes/', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.cookie.split('; ').find(row => row.startsWith('csrftoken='))?.split('=')[1] || '',
+              },
+              body: JSON.stringify({ lines: linesToSend })
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.phonemes) {
+                console.log(`Phonemes for lines ${prevIndex + 1}:`, data.phonemes);
+              } else if (data.error) {
+                console.error('Error converting to phonemes:', data.error);
+              }
+            })
+            .catch(error => console.error('Error:', error));
+
             return prevIndex + 1;
           } else {
-            clearInterval(interval); // Clear interval when done
+            clearInterval(interval);
             return prevIndex;
           }
         });
-      }, 5000); // Display each line for 5 seconds
+      }, 5000); 
     } else if (isPaused) {
-      clearInterval(interval); // Clear interval if paused
+      clearInterval(interval);
     }
     return () => clearInterval(interval);
-  }, [isRecordingStarted, isPaused, currentLineIndex, storyLines.length]);
+  }, [isRecordingStarted, isPaused, currentLineIndex, storyLines]);
 
-  // Callback for CaptureAudio when recording starts
   const handleRecordingStart = () => {
     setIsRecordingStarted(true);
-    setCurrentLineIndex(0); // Start from the first line
+    setCurrentLineIndex(0);
   };
 
-  // Callback for CaptureAudio when recording is paused
   const handlePauseRecording = () => {
     setIsPaused(true);
+
+    const linesToSend = storyLines.slice(0, currentLineIndex + 1); 
+    fetch('http://127.0.0.1:8000/convert-to-phonemes/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': document.cookie.split('; ').find(row => row.startsWith('csrftoken='))?.split('=')[1] || '',
+      },
+      body: JSON.stringify({ lines: linesToSend, is_final: true }) 
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.phonemes) {
+        console.log('Final Phonemes:', data.phonemes);
+      } else if (data.error) {
+        console.error('Error converting to phonemes:', data.error);
+      }
+    })
+    .catch(error => console.error('Error:', error));
   };
 
-  // Callback for CaptureAudio when recording resumes
   const handleResumeRecording = () => {
     setIsPaused(false);
+  };
+
+  const handleResults = (data) => {
+    setResults(data);
   };
 
   return (
@@ -61,7 +102,6 @@ const ReadingPage = () => {
       <div className="reading-page">
         <h1>{story?.title}</h1>
         <img src={Logo} alt="Logo" className="login-logo" />
-
         <div className="story-content">
           {storyLines.map((line, index) => (
             <p 
@@ -72,15 +112,14 @@ const ReadingPage = () => {
             </p>
           ))}
         </div>
-
-        {/* Pass callbacks to CaptureAudio */}
         <CaptureAudio 
           storyTitle={story?.title}
           onStartRecording={handleRecordingStart}
           onPauseRecording={handlePauseRecording}
           onResumeRecording={handleResumeRecording}
+          onResults={handleResults} // Pass the results handler to CaptureAudio
         />
-        
+        {results && <Results {...results} />} {/* Render Results component if results are available */}
       </div>
     </>
   );
