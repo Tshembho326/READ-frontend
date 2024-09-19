@@ -14,7 +14,7 @@ const ReadingPage = () => {
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
   const [isRecordingStarted, setIsRecordingStarted] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
-  const [results, setResults] = useState(null); // State for results
+  const [results, setResults] = useState(null); 
 
   const storyLines = story?.content ? story.content.split('.') : [];
 

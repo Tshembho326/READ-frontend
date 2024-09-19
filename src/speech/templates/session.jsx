@@ -1,7 +1,14 @@
 import React from 'react';
-import '../static/css/Session.css' // Import the CSS file for styling
+import { useNavigate } from 'react-router-dom'; // Import the useNavigate hook
+import '../static/css/Session.css'; // Import the CSS file for styling
 
 const Session = ({ level, emojiSrc, quote }) => {
+    const navigate = useNavigate(); // Initialize useNavigate
+
+    const handleNextSession = () => {
+        navigate('/library/'); // Navigate to the /library/ route
+    };
+
     return (
         <div className="container4">
             <div className="content">
@@ -20,7 +27,9 @@ const Session = ({ level, emojiSrc, quote }) => {
                     <blockquote>
                         "{quote}"
                     </blockquote>
-                    <button className="next-session">Next Session</button>
+                    <button className="next-session" onClick={handleNextSession}>
+                        Next Session
+                    </button>
                 </div>
             </div>
         </div>
