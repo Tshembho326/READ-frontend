@@ -2,20 +2,38 @@ import React, { useState, useEffect } from "react";
 import "../static/css/Progress.css"; 
 import Header from '../../llibrary/tamplates/Header';
 import { Helmet } from 'react-helmet';
-import ProgressTracker from '../../home/tamplates/Progress'; 
+import ProgressTracker from '../../home/tamplates/Progress';
+import bookData from '../../Books.json'; // Import book data
 
 const Progress = () => {
     const [detailedProgress, setDetailedProgress] = useState([]);
 
-
     useEffect(() => {
-        // Example progress levels to display
-        setDetailedProgress([
-            { level: 'Easy', levelValue: 1, progress: 70 },
-            { level: 'Medium', levelValue: 2, progress: 60 },
-            { level: 'Hard', levelValue: 3, progress: 40 },
-        ]);
-    }, []);
+        // Retrieve previously read titles from localStorage
+        const titles = JSON.parse(localStorage.getItem('TitlesList')) || [];
+
+        // Filter out the previously read stories from the book data
+        const previouslyReadStories = titles.map(title => {
+            return bookData.find(book => book.title === title);
+        }).filter(Boolean); // Filter out any null values
+
+        // Calculate progress for each difficulty level
+        const difficultyLevels = ['Easy', 'Medium', 'Hard'];
+        const progressData = difficultyLevels.map(level => {
+            const totalStoriesAtLevel = bookData.filter(book => book.difficulty === level).length;
+            const storiesReadAtLevel = previouslyReadStories.filter(book => book.difficulty === level).length;
+            const progress = totalStoriesAtLevel > 0 ? (storiesReadAtLevel / totalStoriesAtLevel) * 100 : 0;
+
+            return {
+                level,
+                levelValue: difficultyLevels.indexOf(level) + 1,
+                progress: Math.round(progress) // Round to the nearest whole number
+            };
+        });
+
+        // Update the detailed progress state with the calculated progress
+        setDetailedProgress(progressData);
+    }, []); // Empty dependency array to run this effect once on component mount
 
     return (
         <>
@@ -37,6 +55,7 @@ const Progress = () => {
                                 <div className="progress-bar">
                                     <div className="progress" style={{ width: `${progress.progress}%` }}></div>
                                 </div>
+                                <span>{progress.progress}% Completed</span>
                             </div>
                         ))}
                     </div>

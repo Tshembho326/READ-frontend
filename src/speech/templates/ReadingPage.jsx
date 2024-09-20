@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { useLocation } from 'react-router-dom';
 import CaptureAudio from './CaptureAudio';
-import Results from './Results'; // Import the Results component
+import Results from './Results';
 import Logo from '../static/images/reading.png';
 import '../static/css/ReadingPage.css';
 import Header from '../../llibrary/tamplates/Header';
@@ -14,7 +14,8 @@ const ReadingPage = () => {
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
   const [isRecordingStarted, setIsRecordingStarted] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
-  const [results, setResults] = useState(null); 
+  const [results, setResults] = useState(null);
+  const [isResultsVisible, setIsResultsVisible] = useState(false);
 
   const storyLines = story?.content ? story.content.split('.') : [];
 
@@ -24,8 +25,7 @@ const ReadingPage = () => {
       interval = setInterval(() => {
         setCurrentLineIndex(prevIndex => {
           if (prevIndex < storyLines.length - 1) {
-
-            const linesToSend = storyLines.slice(0, prevIndex + 1); 
+            const linesToSend = storyLines.slice(0, prevIndex + 1);
             fetch('http://127.0.0.1:8000/convert-to-phonemes/', {
               method: 'POST',
               headers: {
@@ -50,7 +50,7 @@ const ReadingPage = () => {
             return prevIndex;
           }
         });
-      }, 5000); 
+      }, 5000);
     } else if (isPaused) {
       clearInterval(interval);
     }
@@ -65,14 +65,14 @@ const ReadingPage = () => {
   const handlePauseRecording = () => {
     setIsPaused(true);
 
-    const linesToSend = storyLines.slice(0, currentLineIndex + 1); 
+    const linesToSend = storyLines.slice(0, currentLineIndex + 1);
     fetch('http://127.0.0.1:8000/convert-to-phonemes/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'X-CSRFToken': document.cookie.split('; ').find(row => row.startsWith('csrftoken='))?.split('=')[1] || '',
       },
-      body: JSON.stringify({ lines: linesToSend, is_final: true }) 
+      body: JSON.stringify({ lines: linesToSend, is_final: true })
     })
     .then(response => response.json())
     .then(data => {
@@ -91,6 +91,10 @@ const ReadingPage = () => {
 
   const handleResults = (data) => {
     setResults(data);
+  };
+
+  const toggleResultsVisibility = () => {
+    setIsResultsVisible(prevState => !prevState);
   };
 
   return (
@@ -117,9 +121,14 @@ const ReadingPage = () => {
           onStartRecording={handleRecordingStart}
           onPauseRecording={handlePauseRecording}
           onResumeRecording={handleResumeRecording}
-          onResults={handleResults} // Pass the results handler to CaptureAudio
+          onResults={handleResults} 
         />
-        {results && <Results {...results} />} {/* Render Results component if results are available */}
+        
+        <button onClick={toggleResultsVisibility} className="next-session">
+          {isResultsVisible ? 'Hide Results' : 'Show Results'}
+        </button>
+        
+        {isResultsVisible && results && <Results {...results} />}
       </div>
     </>
   );
