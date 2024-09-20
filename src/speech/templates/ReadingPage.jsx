@@ -16,6 +16,7 @@ const ReadingPage = () => {
   const [isPaused, setIsPaused] = useState(false);
   const [results, setResults] = useState(null);
   const [isResultsVisible, setIsResultsVisible] = useState(false);
+  const [isFinishedReading, setIsFinishedReading] = useState(false);
 
   const storyLines = story?.content ? story.content.split('.') : [];
 
@@ -46,7 +47,9 @@ const ReadingPage = () => {
 
             return prevIndex + 1;
           } else {
+            // Mark the reading as finished when the last line is reached
             clearInterval(interval);
+            setIsFinishedReading(true);
             return prevIndex;
           }
         });
@@ -124,9 +127,12 @@ const ReadingPage = () => {
           onResults={handleResults} 
         />
         
-        <button onClick={toggleResultsVisibility} className="next-session">
-          {isResultsVisible ? 'Hide Results' : 'Show Results'}
-        </button>
+        {/* Show the "Show Results" button only if reading is finished or paused */}
+        {(isPaused || isFinishedReading) && (
+          <button onClick={toggleResultsVisibility} className="next-session">
+            {isResultsVisible ? 'Hide Results' : 'Show Results'}
+          </button>
+        )}
         
         {isResultsVisible && results && <Results {...results} />}
       </div>
